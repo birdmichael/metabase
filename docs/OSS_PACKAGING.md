@@ -65,3 +65,11 @@ Official Docker docs: [Running Metabase on Docker](https://www.metabase.com/docs
 - Frontend deps use `bun install --frozen-lockfile`; a dirty lockfile fails the image build.
 - Uberjar / image builds need a lot of RAM; OOM is a common failure.
 - Production application DB must be Postgres (or another supported DB), not H2.
+
+## Original OSS visualizations
+
+This fork adds original AGPL charts and shared animation defaults. **Not** Enterprise ports.
+
+Full catalog, data requirements, and how to pick each chart in the UI: [OSS_VISUALIZATIONS.md](./OSS_VISUALIZATIONS.md).
+
+Browser preview (no uberjar): [oss-viz-gallery](./oss-viz-gallery/README.md).

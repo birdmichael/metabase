@@ -2,6 +2,7 @@ import type { TreemapSeriesOption } from "echarts/charts";
 import { match } from "ts-pattern";
 
 import { formatPercent as formatPercentDefault } from "metabase/static-viz/lib/numbers";
+import { getEChartsAnimationOptions } from "metabase/visualizations/echarts/animation";
 import { getTextColorForBackground } from "metabase/ui/colors";
 import { truncateText } from "metabase/visualizations/lib/text";
 import type { RenderingContext } from "metabase/visualizations/types";
@@ -40,6 +41,7 @@ type TreemapChartSeriesOption = TreemapSeriesOption & {
 export type TreemapChartOptionConfig = {
   tree: TreemapTree;
   colors?: Record<string, string>;
+  isAnimated?: boolean;
   isDrilled?: boolean;
   formatValue?: (value: number) => string;
   formatPercent?: (ratio: number) => string;
@@ -72,7 +74,7 @@ const MIN_TILE_SIZE = 25 * 25;
 
 export function getTreemapChartOption(config: TreemapChartOptionConfig): {
   series: TreemapChartSeriesOption;
-} {
+} & ReturnType<typeof getEChartsAnimationOptions> {
   const {
     tree,
     showParentLabels = true,
@@ -123,7 +125,10 @@ export function getTreemapChartOption(config: TreemapChartOptionConfig): {
     data: toSeriesData({ tree, config: buildConfig }),
   };
 
-  return { series };
+  return {
+    ...getEChartsAnimationOptions(config.isAnimated ?? true),
+    series,
+  };
 }
 
 function createSeriesBuildConfig({
@@ -486,6 +491,7 @@ export function getStaticTreemapOption(
 } {
   const option = getTreemapChartOption({
     ...config,
+    isAnimated: false,
     labelLayout: layouts?.leafLabelLayout,
     parentLabelLayout: layouts?.parentLabelLayout,
   });

@@ -3,6 +3,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useLatest } from "react-use";
 
 import { Box, Stack } from "metabase/ui";
+import { isReducedMotionPreferred } from "metabase/utils/dom";
 import { extractRemappings } from "metabase/visualizations";
 import { ResponsiveEChartsRenderer } from "metabase/visualizations/components/EChartsRenderer";
 import { getTreemapBreadcrumbModel } from "metabase/visualizations/echarts/graph/treemap/model/breadcrumb";
@@ -116,6 +117,7 @@ export const TreemapChart = ({
     const seriesOption = getTreemapChartOption({
       tree,
       colors,
+      isAnimated: !isReducedMotionPreferred(),
       isDrilled: viewRootId !== null,
       showParentLabels,
       showLeafLabels,

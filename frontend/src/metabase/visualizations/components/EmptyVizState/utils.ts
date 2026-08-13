@@ -250,6 +250,266 @@ const emptyVizConfig: Record<SupportedDisplayType, EmptyVizConfig> = {
       return t`E.g. Sum of revenue grouped by Country`;
     },
   },
+  radar: {
+    get imgSrc() {
+      return getSubpathSafeUrl(
+        "app/assets/img/empty-states/visualizations/pie.svg",
+      );
+    },
+    get primaryText() {
+      return t`Then pick one or more metrics and a column to group by.`;
+    },
+    get secondaryText() {
+      return t`E.g., Sales and Profit grouped by Product category`;
+    },
+  },
+  heatmap: {
+    get imgSrc() {
+      return getSubpathSafeUrl(
+        "app/assets/img/empty-states/visualizations/scatter.svg",
+      );
+    },
+    get primaryText() {
+      return t`Then pick a metric and two columns to group by.`;
+    },
+    get secondaryText() {
+      return t`E.g., Count of orders grouped by Day and Product category`;
+    },
+  },
+  sunburst: {
+    get imgSrc() {
+      return getSubpathSafeUrl(
+        "app/assets/img/empty-states/visualizations/pie.svg",
+      );
+    },
+    get primaryText() {
+      return t`Then pick a metric and two or more columns to group by.`;
+    },
+    get secondaryText() {
+      return t`E.g., Revenue grouped by Region and Country`;
+    },
+  },
+  rose: {
+    get imgSrc() {
+      return getSubpathSafeUrl(
+        "app/assets/img/empty-states/visualizations/pie.svg",
+      );
+    },
+    get primaryText() {
+      return t`Then pick a metric and a column to group by.`;
+    },
+    get secondaryText() {
+      return t`E.g., Count of users grouped by Subscription plan`;
+    },
+  },
+  calendar: {
+    get imgSrc() {
+      return getSubpathSafeUrl(
+        "app/assets/img/empty-states/visualizations/scatter.svg",
+      );
+    },
+    get primaryText() {
+      return t`Then pick a metric and a date column to group by.`;
+    },
+    get secondaryText() {
+      return t`E.g., Count of orders grouped by Created date`;
+    },
+  },
+  donut: {
+    get imgSrc() {
+      return getSubpathSafeUrl(
+        "app/assets/img/empty-states/visualizations/pie.svg",
+      );
+    },
+    get primaryText() {
+      return t`Then pick a metric and a column to group by.`;
+    },
+    get secondaryText() {
+      return t`E.g., Count of users grouped by Subscription plan`;
+    },
+  },
+  bubble: {
+    get imgSrc() {
+      return getSubpathSafeUrl(
+        "app/assets/img/empty-states/visualizations/scatter.svg",
+      );
+    },
+    get primaryText() {
+      return t`Then pick two metrics, an optional size metric, and an optional category.`;
+    },
+    get secondaryText() {
+      return t`E.g., Revenue vs Orders with bubble size as Profit`;
+    },
+  },
+  wordcloud: {
+    get imgSrc() {
+      return getSubpathSafeUrl(
+        "app/assets/img/empty-states/visualizations/pie.svg",
+      );
+    },
+    get primaryText() {
+      return t`Then pick a metric and a column of words to group by.`;
+    },
+    get secondaryText() {
+      return t`E.g., Count of reviews grouped by Keyword`;
+    },
+  },
+  bullet: {
+    get imgSrc() {
+      return getSubpathSafeUrl(
+        "app/assets/img/empty-states/visualizations/progress.svg",
+      );
+    },
+    get primaryText() {
+      return t`Then pick an actual metric and a target metric or target value.`;
+    },
+    get secondaryText() {
+      return t`E.g., Sales vs Quota`;
+    },
+  },
+  histogram: {
+    get imgSrc() {
+      return getSubpathSafeUrl(
+        "app/assets/img/empty-states/visualizations/bar.svg",
+      );
+    },
+    get primaryText() {
+      return t`Then pick a numeric column to bin into frequencies.`;
+    },
+    get secondaryText() {
+      return t`E.g., Distribution of order totals`;
+    },
+  },
+  radialbar: {
+    get imgSrc() {
+      return getSubpathSafeUrl(
+        "app/assets/img/empty-states/visualizations/bar.svg",
+      );
+    },
+    get primaryText() {
+      return t`Then pick a metric and a column to group by.`;
+    },
+    get secondaryText() {
+      return t`E.g., Count of users grouped by Country`;
+    },
+  },
+  lollipop: {
+    get imgSrc() {
+      return getSubpathSafeUrl(
+        "app/assets/img/empty-states/visualizations/bar.svg",
+      );
+    },
+    get primaryText() {
+      return t`Then pick a metric and a column to group by.`;
+    },
+    get secondaryText() {
+      return t`E.g., Count of customers grouped by State`;
+    },
+  },
+  liquid: {
+    get imgSrc() {
+      return getSubpathSafeUrl(
+        "app/assets/img/empty-states/visualizations/gauge.svg",
+      );
+    },
+    get primaryText() {
+      return t`Then pick a metric (0–1 or a percent of a maximum).`;
+    },
+    get secondaryText() {
+      return t`E.g., Completion rate`;
+    },
+  },
+  waffle: {
+    get imgSrc() {
+      return getSubpathSafeUrl(
+        "app/assets/img/empty-states/visualizations/pie.svg",
+      );
+    },
+    get primaryText() {
+      return t`Then pick a metric and a column to group by.`;
+    },
+    get secondaryText() {
+      return t`E.g., Count of users grouped by Subscription plan`;
+    },
+  },
+  pareto: {
+    get imgSrc() {
+      return getSubpathSafeUrl(
+        "app/assets/img/empty-states/visualizations/combo.svg",
+      );
+    },
+    get primaryText() {
+      return t`Then pick a metric and a column to group by.`;
+    },
+    get secondaryText() {
+      return t`E.g., Defects grouped by Cause`;
+    },
+  },
+  circlepack: {
+    get imgSrc() {
+      return getSubpathSafeUrl(
+        "app/assets/img/empty-states/visualizations/pie.svg",
+      );
+    },
+    get primaryText() {
+      return t`Then pick a metric and one or more columns to group by.`;
+    },
+    get secondaryText() {
+      return t`E.g., Revenue grouped by Region and Country`;
+    },
+  },
+  graph: {
+    get imgSrc() {
+      return getSubpathSafeUrl(
+        "app/assets/img/empty-states/visualizations/sankey.svg",
+      );
+    },
+    get primaryText() {
+      return t`Then pick source and target columns, and an optional value.`;
+    },
+    get secondaryText() {
+      return t`E.g., Page flows from Referrer to Landing page`;
+    },
+  },
+  gantt: {
+    get imgSrc() {
+      return getSubpathSafeUrl(
+        "app/assets/img/empty-states/visualizations/bar.svg",
+      );
+    },
+    get primaryText() {
+      return t`Then pick a category and start and end times.`;
+    },
+    get secondaryText() {
+      return t`E.g., Tasks with Start and End dates`;
+    },
+  },
+  candlestick: {
+    get imgSrc() {
+      return getSubpathSafeUrl(
+        "app/assets/img/empty-states/visualizations/waterfall.svg",
+      );
+    },
+    get primaryText() {
+      return t`Then pick a time column and open, close, low, and high metrics.`;
+    },
+    get secondaryText() {
+      return t`E.g., Daily OHLC prices`;
+    },
+  },
+  pyramid: {
+    get imgSrc() {
+      return getSubpathSafeUrl(
+        "app/assets/img/empty-states/visualizations/row.svg",
+      );
+    },
+    get primaryText() {
+      return t`Then pick a category and two metrics (left and right).`;
+    },
+    get secondaryText() {
+      return t`E.g., Population by age band for male and female`;
+    },
+  },
 };
 
 export const getEmptyVizConfig = (
