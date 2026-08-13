@@ -68,33 +68,8 @@ Official Docker docs: [Running Metabase on Docker](https://www.metabase.com/docs
 
 ## Original OSS visualizations
 
-This fork adds original AGPL / Community Edition charts. They are **not** Enterprise ports and do not live under `enterprise/` or `metabase-enterprise`.
+This fork adds original AGPL charts and shared animation defaults. **Not** Enterprise ports.
 
-- **Radar** (`display: radar`): one dimension for axis indicators and one or more metrics as series, rendered with ECharts `radar`.
-- **Heatmap** (`display: heatmap`): two dimensions (`heatmap.x`, `heatmap.y`) plus a metric (`heatmap.value`), rendered with ECharts `heatmap` and `visualMap`.
-- **Sunburst** (`display: sunburst`): hierarchical dimensions plus a metric, rendered with the already-registered ECharts `sunburst` chart.
-- **Rose** (`display: rose`): one dimension plus a metric, a nightingale / rose pie (`roseType: "area"`).
-- **Calendar heatmap** (`display: calendar`): a date dimension plus a metric, ECharts `calendar` + `heatmap`. Distinct from the matrix heatmap.
-- **Donut** (`display: donut`): one dimension plus a metric, ECharts pie with radius `["50%","75%"]` and a center total. Distinct from pie.
-- **Bubble** (`display: bubble`): two metrics (x, y), optional size metric, optional category, ECharts scatter with `symbolSize`. Distinct from scatter.
-- **Word cloud** (`display: wordcloud`): dimension (word) plus metric (weight), original archimedean spiral of ECharts graphic `text` elements. No third-party wordcloud plugin.
-- **Bullet** (`display: bullet`): actual metric plus target metric or target value, horizontal bar with qualitative ranges and a target marker.
-- **Histogram** (`display: histogram`): one numeric column binned (~10 Sturges buckets) as bar frequencies. Distinct from a category bar chart.
-- **Radial bar** (`display: radialbar`): one dimension plus a metric, ECharts polar/angle axis + bar series.
-- **Lollipop** (`display: lollipop`): one dimension plus a metric, bar stems + pictorialBar circle heads.
-- **Liquid fill** (`display: liquid`): one metric (0–1 or percent of max), original sine-wave clip in a circle. Not `echarts-liquidfill`.
-- **Waffle** (`display: waffle`): one dimension plus a metric, 10×10 grid of squares colored by share.
-- **Pareto** (`display: pareto`): one dimension plus a metric, sorted bars plus cumulative percent line.
-- **Circle packing** (`display: circlepack`): hierarchical dimensions plus a metric, original packed-circle layout as a custom series (not ECharts graph circular layout).
-- **Network / force graph** (`display: graph`): source and target dimensions plus optional value, ECharts `graph` with force layout.
-- **Gantt** (`display: gantt`): category plus start and end (date or number), custom bars on a time/value axis.
-- **Candlestick** (`display: candlestick`): time dimension plus open/close/low/high metrics, ECharts candlestick.
-- **Population pyramid** (`display: pyramid`): category plus two metrics, back-to-back bars.
+Full catalog, data requirements, and how to pick each chart in the UI: [OSS_VISUALIZATIONS.md](./OSS_VISUALIZATIONS.md).
 
-Shared ECharts animation defaults (cartesian, pie, sankey, treemap, radar, heatmap, sunburst, rose, calendar, and the everyday charts above):
-
-- Animated (interactive UI, unless the user prefers reduced motion): `animationDuration` 500ms, `animationDurationUpdate` 300ms, easing `cubicOut`.
-- Not animated (static exports / reduced motion): `animation` false and duration 0.
-
-Do not set `MB_EDITION=ee` for these charts.
-
+Browser preview (no uberjar): [oss-viz-gallery](./oss-viz-gallery/README.md).
