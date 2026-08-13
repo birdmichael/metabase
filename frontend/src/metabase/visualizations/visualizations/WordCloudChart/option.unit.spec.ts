@@ -68,5 +68,21 @@ describe("getWordCloudChartOption", () => {
     );
     expect(option.animation).toBe(false);
   });
+
+  it("filters stopwords from the layout", () => {
+    const option = getWordCloudChartOption(
+      rawSeries,
+      {
+        "wordcloud.dimension": "Category",
+        "wordcloud.metric": "Sales",
+        "wordcloud.stopwords": "A",
+      },
+      renderingContext,
+      true,
+    );
+    const graphic = option.graphic as { elements: { style: { text: string } }[] };
+    expect(graphic.elements.map((el) => el.style.text)).toEqual(["B"]);
+  });
+
 });
 

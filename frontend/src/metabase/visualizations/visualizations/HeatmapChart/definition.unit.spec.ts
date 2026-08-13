@@ -111,4 +111,17 @@ describe("HEATMAP_CHART_DEFINITION", () => {
       );
     });
   });
+
+  describe("settings", () => {
+    it("exposes column mappings and display settings", () => {
+      const settings = HEATMAP_CHART_DEFINITION.settings;
+      expect(settings["heatmap.x"]).toBeDefined();
+      expect(settings["heatmap.y"]).toBeDefined();
+      expect(settings["heatmap.value"]).toBeDefined();
+      expect(settings["heatmap.color_min"]).toBeDefined();
+      expect(settings["heatmap.color_max"]).toBeDefined();
+      expect(settings["heatmap.show_values"]?.getDefault?.()).toBe(false);
+    });
+  });
+
 });

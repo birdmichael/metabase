@@ -57,6 +57,7 @@ export function getBulletChartOption(
   const poor = maxValue * 0.5;
   const satisfactory = maxValue * 0.8;
   const brand = renderingContext.getColor("core-brand");
+  const showRanges = settings["bullet.show_ranges"] !== false;
 
   return {
     ...getEChartsAnimationOptions(isAnimated),
@@ -90,36 +91,40 @@ export function getBulletChartOption(
       },
     },
     series: [
-      {
-        type: "bar",
-        name: "Poor",
-        data: [poor],
-        barGap: "-100%",
-        barWidth: 22,
-        itemStyle: { color: "rgba(234, 84, 85, 0.25)" },
-        silent: true,
-        z: 1,
-      },
-      {
-        type: "bar",
-        name: "Satisfactory",
-        data: [satisfactory],
-        barGap: "-100%",
-        barWidth: 22,
-        itemStyle: { color: "rgba(248, 192, 76, 0.25)" },
-        silent: true,
-        z: 2,
-      },
-      {
-        type: "bar",
-        name: "Good",
-        data: [maxValue],
-        barGap: "-100%",
-        barWidth: 22,
-        itemStyle: { color: "rgba(136, 188, 80, 0.25)" },
-        silent: true,
-        z: 3,
-      },
+      ...(showRanges
+        ? [
+            {
+              type: "bar",
+              name: "Poor",
+              data: [poor],
+              barGap: "-100%",
+              barWidth: 22,
+              itemStyle: { color: "rgba(234, 84, 85, 0.25)" },
+              silent: true,
+              z: 1,
+            },
+            {
+              type: "bar",
+              name: "Satisfactory",
+              data: [satisfactory],
+              barGap: "-100%",
+              barWidth: 22,
+              itemStyle: { color: "rgba(248, 192, 76, 0.25)" },
+              silent: true,
+              z: 2,
+            },
+            {
+              type: "bar",
+              name: "Good",
+              data: [maxValue],
+              barGap: "-100%",
+              barWidth: 22,
+              itemStyle: { color: "rgba(136, 188, 80, 0.25)" },
+              silent: true,
+              z: 3,
+            },
+          ]
+        : []),
       {
         type: "bar",
         name: actualCol.display_name || actualCol.name,

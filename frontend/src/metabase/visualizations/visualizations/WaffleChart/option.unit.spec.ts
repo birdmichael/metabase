@@ -71,5 +71,20 @@ describe("getWaffleChartOption", () => {
     );
     expect(option.animation).toBe(false);
   });
+
+  it("hides the legend when configured", () => {
+    const option = getWaffleChartOption(
+      rawSeries,
+      {
+        "waffle.dimension": "Category",
+        "waffle.metric": "Sales",
+        "waffle.show_legend": false,
+      },
+      renderingContext,
+      true,
+    );
+    expect(option.legend).toEqual(expect.objectContaining({ show: false }));
+  });
+
 });
 

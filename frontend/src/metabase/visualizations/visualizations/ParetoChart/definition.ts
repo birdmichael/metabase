@@ -47,6 +47,27 @@ export const SETTINGS_DEFINITIONS: VisualizationSettingsDefinitions = {
     autoOpenWhenUnset: false,
     getDefault: ([{ data }]) => metricColumns(data)[0]?.name,
   }),
+
+  "pareto.show_legend": {
+    getSection: () => t`Display`,
+    get title() {
+      return t`Show legend`;
+    },
+    widget: "toggle",
+    getDefault: () => true,
+    persistDefault: true,
+    inline: true,
+  },
+  "pareto.show_values": {
+    getSection: () => t`Display`,
+    get title() {
+      return t`Show values`;
+    },
+    widget: "toggle",
+    getDefault: () => false,
+    persistDefault: true,
+    inline: true,
+  },
 };
 
 export const PARETO_CHART_DEFINITION: VisualizationDefinition = {

@@ -89,4 +89,27 @@ describe("getHeatmapChartOption", () => {
     expect(option.animation).toBe(true);
     expect(option.animationDuration).toBe(500);
   });
+
+  it("applies visualMap range and value labels from settings", () => {
+    const option = getHeatmapChartOption(
+      rawSeries,
+      {
+        "heatmap.x": "X",
+        "heatmap.y": "Y",
+        "heatmap.value": "Value",
+        "heatmap.color_min": 0,
+        "heatmap.color_max": 10,
+        "heatmap.show_values": true,
+      },
+      renderingContext,
+      false,
+    );
+    expect(option.visualMap).toEqual(expect.objectContaining({ min: 0, max: 10 }));
+    expect(option.series).toEqual([
+      expect.objectContaining({
+        label: expect.objectContaining({ show: true }),
+      }),
+    ]);
+  });
+
 });

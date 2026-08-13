@@ -86,5 +86,31 @@ describe("getCandlestickChartOption", () => {
     );
     expect(option.animation).toBe(false);
   });
+
+  it("applies increase and decrease colors", () => {
+    const option = getCandlestickChartOption(
+      rawSeries,
+      {
+        "candlestick.time": "Day",
+        "candlestick.open": "Open",
+        "candlestick.close": "Close",
+        "candlestick.low": "Low",
+        "candlestick.high": "High",
+        "candlestick.increase_color": "#00ff00",
+        "candlestick.decrease_color": "#ff0000",
+      },
+      renderingContext,
+      true,
+    );
+    expect(option.series).toEqual([
+      expect.objectContaining({
+        itemStyle: expect.objectContaining({
+          color: "#00ff00",
+          color0: "#ff0000",
+        }),
+      }),
+    ]);
+  });
+
 });
 

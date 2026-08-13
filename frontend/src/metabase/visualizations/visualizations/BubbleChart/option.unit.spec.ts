@@ -74,5 +74,22 @@ describe("getBubbleChartOption", () => {
     );
     expect(option.animation).toBe(false);
   });
+
+  it("hides the legend when configured", () => {
+    const option = getBubbleChartOption(
+      rawSeries,
+      {
+        "bubble.x": "X",
+        "bubble.y": "Y",
+        "bubble.size": "Size",
+        "bubble.dimension": "Cat",
+        "bubble.show_legend": false,
+      },
+      renderingContext,
+      true,
+    );
+    expect(option.legend).toEqual(expect.objectContaining({ show: false }));
+  });
+
 });
 

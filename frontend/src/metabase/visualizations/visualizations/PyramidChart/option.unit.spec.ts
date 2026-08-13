@@ -69,5 +69,27 @@ describe("getPyramidChartOption", () => {
     );
     expect(option.animation).toBe(false);
   });
+
+  it("hides the legend and shows values when configured", () => {
+    const option = getPyramidChartOption(
+      rawSeries,
+      {
+        "pyramid.category": "Age",
+        "pyramid.left": "Male",
+        "pyramid.right": "Female",
+        "pyramid.show_legend": false,
+        "pyramid.show_values": true,
+      },
+      renderingContext,
+      true,
+    );
+    expect(option.legend).toEqual(expect.objectContaining({ show: false }));
+    expect(option.series[0]).toEqual(
+      expect.objectContaining({
+        label: expect.objectContaining({ show: true }),
+      }),
+    );
+  });
+
 });
 

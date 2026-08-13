@@ -131,6 +131,7 @@ export function getSunburstChartOption(
         sort: undefined,
         data: coloredTree,
         label: {
+          show: settings["sunburst.show_labels"] !== false,
           rotate: "radial",
           color: renderingContext.getColor("text-primary"),
           fontFamily: renderingContext.fontFamily,

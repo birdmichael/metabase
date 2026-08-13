@@ -64,7 +64,12 @@ export function getRadialBarChartOption(
 
   const colors = getColorsForValues(order, settings["series_settings.colors"]);
   const values = order.map((name) => totals.get(name) ?? 0);
-  const maxValue = Math.max(1, ...values);
+  const configuredMax = toFiniteNumber(settings["radialbar.max"] as RowValue);
+  const maxValue =
+    configuredMax != null && configuredMax > 0
+      ? configuredMax
+      : Math.max(1, ...values);
+  const showLabels = settings["radialbar.show_labels"] !== false;
 
   return {
     ...getEChartsAnimationOptions(isAnimated),
@@ -94,6 +99,7 @@ export function getRadialBarChartOption(
       type: "category",
       data: order,
       axisLabel: {
+        show: showLabels,
         color: renderingContext.getColor("text-secondary"),
         fontFamily: renderingContext.fontFamily,
       },

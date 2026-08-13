@@ -63,5 +63,22 @@ describe("getBulletChartOption", () => {
     );
     expect(option.animation).toBe(false);
   });
+
+  it("omits qualitative ranges when disabled", () => {
+    const option = getBulletChartOption(
+      rawSeries,
+      {
+        "bullet.actual": "Actual",
+        "bullet.target": "Target",
+        "bullet.show_ranges": false,
+      },
+      renderingContext,
+      true,
+    );
+    const series = option.series as { name?: string }[];
+    expect(series.some((item) => item.name === "Poor")).toBe(false);
+    expect(series.some((item) => item.name === "Actual")).toBe(true);
+  });
+
 });
 

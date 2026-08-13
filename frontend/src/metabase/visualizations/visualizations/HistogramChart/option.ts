@@ -23,13 +23,16 @@ const findColumn = (cols: DatasetColumn[], name: string | undefined) =>
 
 export function createHistogramBins(
   values: number[],
-  requestedBins = 10,
+  requestedBins?: number,
 ): { label: string; count: number; start: number; end: number }[] {
   if (values.length === 0) {
     return [];
   }
   const sturges = Math.ceil(Math.log2(values.length) + 1);
-  const binCount = Math.max(5, Math.min(15, sturges || requestedBins));
+  const binCount =
+    requestedBins != null && Number.isFinite(requestedBins) && requestedBins >= 2
+      ? Math.max(2, Math.min(50, Math.round(requestedBins)))
+      : Math.max(5, Math.min(15, sturges || 10));
   const minValue = Math.min(...values);
   const maxValue = Math.max(...values);
   const span = maxValue - minValue || 1;
@@ -77,7 +80,11 @@ export function getHistogramChartOption(
       values.push(numeric);
     }
   }
-  const bins = createHistogramBins(values);
+  const configuredBins = toFiniteNumber(settings["histogram.bins"] as RowValue);
+  const bins = createHistogramBins(
+    values,
+    configuredBins ?? undefined,
+  );
   const brand = renderingContext.getColor("core-brand");
 
   return {

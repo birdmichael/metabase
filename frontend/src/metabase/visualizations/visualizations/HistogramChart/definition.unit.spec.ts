@@ -63,5 +63,14 @@ describe("HISTOGRAM_CHART_DEFINITION", () => {
       );
     });
   });
+
+  describe("settings", () => {
+    it("defaults to 10 bins", () => {
+      const settings = HISTOGRAM_CHART_DEFINITION.settings;
+      expect(settings["histogram.metric"]).toBeDefined();
+      expect(settings["histogram.bins"]?.getDefault?.()).toBe(10);
+    });
+  });
+
 });
 

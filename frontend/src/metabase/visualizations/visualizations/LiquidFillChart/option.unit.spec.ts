@@ -58,5 +58,21 @@ describe("getLiquidFillOption", () => {
     );
     expect(option.animation).toBe(false);
   });
+
+  it("hides the percent label when configured", () => {
+    const option = getLiquidFillOption(
+      rawSeries,
+      { "liquid.metric": "Ratio", "liquid.show_percent": false },
+      renderingContext,
+      false,
+    );
+    const graphic = option.graphic as {
+      elements: { children: { type: string }[] }[];
+    };
+    expect(graphic.elements[0].children.some((child) => child.type === "text")).toBe(
+      false,
+    );
+  });
+
 });
 

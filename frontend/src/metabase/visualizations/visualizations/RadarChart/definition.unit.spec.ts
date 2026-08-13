@@ -122,4 +122,16 @@ describe("RADAR_CHART_DEFINITION", () => {
       );
     });
   });
+
+  describe("settings", () => {
+    it("exposes column mappings and display defaults", () => {
+      const settings = RADAR_CHART_DEFINITION.settings;
+      expect(settings["radar.dimension"]).toBeDefined();
+      expect(settings["radar.metrics"]).toBeDefined();
+      expect(settings["radar.scale_max"]).toBeDefined();
+      expect(settings["radar.show_legend"]?.getDefault?.()).toBe(true);
+      expect(settings["radar.show_labels"]?.getDefault?.()).toBe(true);
+    });
+  });
+
 });

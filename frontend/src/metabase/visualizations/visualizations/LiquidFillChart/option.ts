@@ -71,6 +71,7 @@ export function getLiquidFillOption(
   const brand = renderingContext.getColor("core-brand");
   const radius = 90;
   const percent = `${Math.round(ratio * 100)}%`;
+  const showPercent = settings["liquid.show_percent"] !== false;
 
   const wave = {
     type: "polygon",
@@ -118,19 +119,23 @@ export function getLiquidFillOption(
               },
             },
             wave,
-            {
-              type: "text",
-              style: {
-                text: percent,
-                fill: renderingContext.getColor("text-primary"),
-                fontSize: 28,
-                fontWeight: 600,
-                fontFamily: renderingContext.fontFamily,
-                textAlign: "center",
-                textVerticalAlign: "middle",
-              },
-              z: 10,
-            },
+            ...(showPercent
+              ? [
+                  {
+                    type: "text",
+                    style: {
+                      text: percent,
+                      fill: renderingContext.getColor("text-primary"),
+                      fontSize: 28,
+                      fontWeight: 600,
+                      fontFamily: renderingContext.fontFamily,
+                      textAlign: "center",
+                      textVerticalAlign: "middle",
+                    },
+                    z: 10,
+                  },
+                ]
+              : []),
           ],
         },
       ],

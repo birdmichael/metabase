@@ -47,6 +47,22 @@ export const SETTINGS_DEFINITIONS: VisualizationSettingsDefinitions = {
     autoOpenWhenUnset: false,
     getDefault: ([{ data }]) => metricColumns(data)[0]?.name,
   }),
+
+  "wordcloud.stopwords": {
+    getSection: () => t`Display`,
+    get title() {
+      return t`Stopwords`;
+    },
+    widget: "input",
+    persistDefault: true,
+    dashboard: true,
+    getDefault: () => "",
+    getProps: () => ({
+      get placeholder() {
+        return t`Comma-separated words to hide`;
+      },
+    }),
+  },
 };
 
 export const WORD_CLOUD_DEFINITION: VisualizationDefinition = {

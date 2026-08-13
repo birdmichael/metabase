@@ -75,7 +75,15 @@ export function getRadarChartOption(
   }
 
   const globalMax = Math.max(0, ...valuesByMetric.flat());
-  const indicatorMax = globalMax === 0 ? 1 : globalMax * 1.05;
+  const configuredMax = toFiniteNumber(settings["radar.scale_max"] as RowValue);
+  const indicatorMax =
+    configuredMax != null && configuredMax > 0
+      ? configuredMax
+      : globalMax === 0
+        ? 1
+        : globalMax * 1.05;
+  const showLegend = settings["radar.show_legend"] !== false;
+  const showLabels = settings["radar.show_labels"] !== false;
   const colors = getColorsForValues(
     metricCols.map((col) => col.name),
     settings["series_settings.colors"],
@@ -90,12 +98,20 @@ export function getRadarChartOption(
     tooltip: {
       trigger: "item",
     },
+    legend: {
+      show: showLegend,
+      textStyle: {
+        color: renderingContext.getColor("text-secondary"),
+        fontFamily: renderingContext.fontFamily,
+      },
+    },
     radar: {
       indicator: indicatorOrder.map((name) => ({
         name,
         max: indicatorMax,
       })),
       axisName: {
+        show: showLabels,
         color: renderingContext.getColor("text-secondary"),
         fontFamily: renderingContext.fontFamily,
       },

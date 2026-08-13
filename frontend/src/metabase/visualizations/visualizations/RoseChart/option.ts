@@ -62,6 +62,9 @@ export function getRoseChartOption(
   }
 
   const colors = getColorsForValues(order, settings["series_settings.colors"]);
+  const roseType = settings["rose.rose_type"] === "radius" ? "radius" : "area";
+  const showLegend = settings["rose.show_legend"] !== false;
+  const showLabels = settings["rose.show_labels"] !== false;
 
   return {
     ...getEChartsAnimationOptions(isAnimated),
@@ -72,16 +75,24 @@ export function getRoseChartOption(
     tooltip: {
       trigger: "item",
     },
+    legend: {
+      show: showLegend,
+      textStyle: {
+        color: renderingContext.getColor("text-secondary"),
+        fontFamily: renderingContext.fontFamily,
+      },
+    },
     series: [
       {
         type: "pie",
-        roseType: "area",
+        roseType,
         radius: ["18%", "75%"],
         itemStyle: {
           borderColor: renderingContext.getColor("background_page-primary"),
           borderWidth: 1,
         },
         label: {
+          show: showLabels,
           color: renderingContext.getColor("text-primary"),
           fontFamily: renderingContext.fontFamily,
         },

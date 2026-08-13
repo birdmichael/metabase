@@ -68,6 +68,43 @@ export const SETTINGS_DEFINITIONS: VisualizationSettingsDefinitions = {
     autoOpenWhenUnset: false,
     getDefault: ([{ data }]) => defaultHeatmapColumns(data).value,
   }),
+
+  "heatmap.color_min": {
+    getSection: () => t`Display`,
+    get title() {
+      return t`Color scale min`;
+    },
+    widget: "number",
+    dashboard: true,
+    getProps: () => ({
+      get placeholder() {
+        return t`Auto`;
+      },
+    }),
+  },
+  "heatmap.color_max": {
+    getSection: () => t`Display`,
+    get title() {
+      return t`Color scale max`;
+    },
+    widget: "number",
+    dashboard: true,
+    getProps: () => ({
+      get placeholder() {
+        return t`Auto`;
+      },
+    }),
+  },
+  "heatmap.show_values": {
+    getSection: () => t`Display`,
+    get title() {
+      return t`Show values`;
+    },
+    widget: "toggle",
+    getDefault: () => false,
+    persistDefault: true,
+    inline: true,
+  },
 };
 
 export const HEATMAP_CHART_DEFINITION: VisualizationDefinition = {
