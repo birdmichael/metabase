@@ -69,6 +69,25 @@ export const getChartSkeletonImage: (
       return <PieSkeleton />;
     case "calendar":
       return <ScatterSkeleton />;
+    case "donut":
+    case "wordcloud":
+    case "liquid":
+    case "waffle":
+    case "circlepack":
+      return <PieSkeleton />;
+    case "bubble":
+      return <ScatterSkeleton />;
+    case "bullet":
+    case "histogram":
+    case "radialbar":
+    case "lollipop":
+    case "pareto":
+    case "gantt":
+    case "candlestick":
+    case "pyramid":
+      return <BarSkeleton />;
+    case "graph":
+      return <SankeySkeleton />;
     case "scatter":
       return <ScatterSkeleton />;
     case "waterfall":

@@ -416,6 +416,46 @@ export type VisualizationSettings = {
   "calendar.date"?: string;
   "calendar.value"?: string;
 
+  // Everyday OSS charts
+  "donut.dimension"?: string;
+  "donut.metric"?: string;
+  "bubble.x"?: string;
+  "bubble.y"?: string;
+  "bubble.size"?: string;
+  "bubble.dimension"?: string;
+  "wordcloud.dimension"?: string;
+  "wordcloud.metric"?: string;
+  "bullet.actual"?: string;
+  "bullet.target"?: string;
+  "bullet.target_value"?: number;
+  "histogram.metric"?: string;
+  "radialbar.dimension"?: string;
+  "radialbar.metric"?: string;
+  "lollipop.dimension"?: string;
+  "lollipop.metric"?: string;
+  "liquid.metric"?: string;
+  "liquid.max"?: number;
+  "waffle.dimension"?: string;
+  "waffle.metric"?: string;
+  "pareto.dimension"?: string;
+  "pareto.metric"?: string;
+  "circlepack.dimensions"?: string[];
+  "circlepack.metric"?: string;
+  "graph.source"?: string;
+  "graph.target"?: string;
+  "graph.value"?: string;
+  "gantt.category"?: string;
+  "gantt.start"?: string;
+  "gantt.end"?: string;
+  "candlestick.time"?: string;
+  "candlestick.open"?: string;
+  "candlestick.close"?: string;
+  "candlestick.low"?: string;
+  "candlestick.high"?: string;
+  "pyramid.category"?: string;
+  "pyramid.left"?: string;
+  "pyramid.right"?: string;
+
   // Treemap settings
   "treemap.grouping"?: string;
   "treemap.sub_grouping"?: string | null;
