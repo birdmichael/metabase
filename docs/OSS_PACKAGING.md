@@ -38,6 +38,18 @@ DOCKER_BUILDKIT=1 docker build --build-arg MB_EDITION=oss --output container-out
 # -> container-output/app/metabase.jar
 ```
 
+## GHCR image (multi-arch)
+
+GitHub Actions publishes a multi-arch manifest to GHCR with `linux/amd64` and `linux/arm64`:
+
+```bash
+docker pull ghcr.io/birdmichael/metabase:oss-0.63.2
+```
+
+Docker selects the image for the host architecture. The `OSS package` workflow builds both platforms (QEMU for arm64 on GitHub-hosted amd64 runners).
+
+Local `./bin/build-oss-docker.sh` stays single-arch (whatever machine you build on).
+
 ## Host uberjar
 
 ```bash
