@@ -107,6 +107,14 @@ export function getWaffleChartOption(
     tooltip: {
       trigger: "item",
     },
+    legend: {
+      show: settings["waffle.show_legend"] !== false,
+      data: order,
+      textStyle: {
+        color: renderingContext.getColor("text-secondary"),
+        fontFamily: renderingContext.fontFamily,
+      },
+    },
     grid: {
       left: 12,
       right: 12,

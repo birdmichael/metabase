@@ -79,8 +79,12 @@ export function getCalendarHeatmapOption(
     .map(([date, value]) => [date, value] as [string, number]);
   const dates = calendarData.map(([date]) => date);
   const values = calendarData.map(([, value]) => value);
-  const minValue = values.length === 0 ? 0 : Math.min(...values);
-  const rawMax = values.length === 0 ? 1 : Math.max(...values);
+  const dataMin = values.length === 0 ? 0 : Math.min(...values);
+  const dataMax = values.length === 0 ? 1 : Math.max(...values);
+  const configuredMin = toFiniteNumber(settings["calendar.color_min"] as RowValue);
+  const configuredMax = toFiniteNumber(settings["calendar.color_max"] as RowValue);
+  const minValue = configuredMin ?? dataMin;
+  const rawMax = configuredMax ?? dataMax;
   const maxValue = rawMax === minValue ? minValue + 1 : rawMax;
   const range =
     dates.length === 0

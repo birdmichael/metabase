@@ -58,6 +58,32 @@ export const SETTINGS_DEFINITIONS: VisualizationSettingsDefinitions = {
     autoOpenWhenUnset: false,
     getDefault: ([{ data }]) => metricColumns(data)[0]?.name,
   }),
+
+  "graph.layout": {
+    getSection: () => t`Display`,
+    get title() {
+      return t`Layout`;
+    },
+    widget: "select",
+    persistDefault: true,
+    getDefault: () => "force",
+    getProps: () => ({
+      options: [
+        { name: t`Force`, value: "force" },
+        { name: t`Circular`, value: "circular" },
+      ],
+    }),
+  },
+  "graph.show_labels": {
+    getSection: () => t`Display`,
+    get title() {
+      return t`Show labels`;
+    },
+    widget: "toggle",
+    getDefault: () => true,
+    persistDefault: true,
+    inline: true,
+  },
 };
 
 export const GRAPH_CHART_DEFINITION: VisualizationDefinition = {

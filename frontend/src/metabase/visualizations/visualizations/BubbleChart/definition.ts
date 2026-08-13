@@ -69,6 +69,17 @@ export const SETTINGS_DEFINITIONS: VisualizationSettingsDefinitions = {
     autoOpenWhenUnset: false,
     getDefault: ([{ data }]) => dimensionColumns(data)[0]?.name,
   }),
+
+  "bubble.show_legend": {
+    getSection: () => t`Display`,
+    get title() {
+      return t`Show legend`;
+    },
+    widget: "toggle",
+    getDefault: () => true,
+    persistDefault: true,
+    inline: true,
+  },
 };
 
 export const BUBBLE_CHART_DEFINITION: VisualizationDefinition = {

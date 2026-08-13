@@ -237,7 +237,7 @@ export function getCirclePackChartOption(
           value: [circle.x, circle.y, circle.r, circle.value],
           itemStyle: { color: colors[circle.name], opacity: 0.85 },
           label: {
-            show: circle.r > 14,
+            show: settings["circlepack.show_labels"] !== false && circle.r > 14,
             formatter: circle.name,
             color: renderingContext.getColor("text-primary"),
           },

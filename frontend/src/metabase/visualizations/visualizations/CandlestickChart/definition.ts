@@ -83,6 +83,25 @@ export const SETTINGS_DEFINITIONS: VisualizationSettingsDefinitions = {
     autoOpenWhenUnset: false,
     getDefault: ([{ data }]) => metricColumns(data)[3]?.name,
   }),
+
+  "candlestick.increase_color": {
+    getSection: () => t`Display`,
+    get title() {
+      return t`Increase color`;
+    },
+    widget: "color",
+    persistDefault: true,
+    getDefault: () => "#88bc50",
+  },
+  "candlestick.decrease_color": {
+    getSection: () => t`Display`,
+    get title() {
+      return t`Decrease color`;
+    },
+    widget: "color",
+    persistDefault: true,
+    getDefault: () => "#ed6e6e",
+  },
 };
 
 export const CANDLESTICK_CHART_DEFINITION: VisualizationDefinition = {

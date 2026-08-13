@@ -78,5 +78,28 @@ describe("getDonutChartOption", () => {
     );
     expect(option.animation).toBe(false);
   });
+
+  it("hides the total and shows slice labels when configured", () => {
+    const option = getDonutChartOption(
+      rawSeries,
+      {
+        "donut.dimension": "Category",
+        "donut.metric": "Sales",
+        "donut.show_total": false,
+        "donut.show_labels": true,
+        "donut.show_legend": false,
+      },
+      renderingContext,
+      true,
+    );
+    expect(option.graphic).toEqual([]);
+    expect(option.legend).toEqual(expect.objectContaining({ show: false }));
+    expect(option.series).toEqual([
+      expect.objectContaining({
+        label: expect.objectContaining({ show: true }),
+      }),
+    ]);
+  });
+
 });
 

@@ -61,6 +61,41 @@ export const SETTINGS_DEFINITIONS: VisualizationSettingsDefinitions = {
       };
     },
   },
+
+  "radar.scale_max": {
+    getSection: () => t`Display`,
+    get title() {
+      return t`Scale max`;
+    },
+    widget: "number",
+    dashboard: true,
+    getProps: () => ({
+      get placeholder() {
+        return t`Auto`;
+      },
+      options: { isNonNegative: true },
+    }),
+  },
+  "radar.show_legend": {
+    getSection: () => t`Display`,
+    get title() {
+      return t`Show legend`;
+    },
+    widget: "toggle",
+    getDefault: () => true,
+    persistDefault: true,
+    inline: true,
+  },
+  "radar.show_labels": {
+    getSection: () => t`Display`,
+    get title() {
+      return t`Show labels`;
+    },
+    widget: "toggle",
+    getDefault: () => true,
+    persistDefault: true,
+    inline: true,
+  },
 };
 
 export const RADAR_CHART_DEFINITION: VisualizationDefinition = {

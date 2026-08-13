@@ -112,9 +112,16 @@ export function getWordCloudChartOption(
     );
   }
 
-  const colors = getColorsForValues(order, settings["series_settings.colors"]);
+  const stopwords = new Set(
+    String(settings["wordcloud.stopwords"] ?? "")
+      .split(/[,\n]/)
+      .map((word) => word.trim().toLowerCase())
+      .filter(Boolean),
+  );
+  const kept = order.filter((name) => !stopwords.has(name.toLowerCase()));
+  const colors = getColorsForValues(kept, settings["series_settings.colors"]);
   const layout = layoutWordCloud(
-    order.map((name) => ({ name, value: Math.abs(totals.get(name) ?? 0) })),
+    kept.map((name) => ({ name, value: Math.abs(totals.get(name) ?? 0) })),
   );
 
   return {

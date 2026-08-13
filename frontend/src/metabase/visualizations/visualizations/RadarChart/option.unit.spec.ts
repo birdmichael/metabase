@@ -92,4 +92,29 @@ describe("getRadarChartOption", () => {
     expect(option.animationDurationUpdate).toBe(300);
     expect(option.animationEasing).toBe("cubicOut");
   });
+
+  it("applies scale max, legend, and label settings", () => {
+    const option = getRadarChartOption(
+      rawSeries,
+      {
+        "radar.dimension": "Category",
+        "radar.metrics": ["Sales"],
+        "radar.scale_max": 50,
+        "radar.show_legend": false,
+        "radar.show_labels": false,
+      },
+      renderingContext,
+      false,
+    );
+    expect(option.radar).toEqual(
+      expect.objectContaining({
+        indicator: expect.arrayContaining([
+          expect.objectContaining({ max: 50 }),
+        ]),
+        axisName: expect.objectContaining({ show: false }),
+      }),
+    );
+    expect(option.legend).toEqual(expect.objectContaining({ show: false }));
+  });
+
 });

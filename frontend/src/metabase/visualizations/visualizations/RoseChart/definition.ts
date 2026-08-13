@@ -47,6 +47,42 @@ export const SETTINGS_DEFINITIONS: VisualizationSettingsDefinitions = {
     autoOpenWhenUnset: false,
     getDefault: ([{ data }]) => metricColumns(data)[0]?.name,
   }),
+
+  "rose.rose_type": {
+    getSection: () => t`Display`,
+    get title() {
+      return t`Rose type`;
+    },
+    widget: "select",
+    persistDefault: true,
+    getDefault: () => "area",
+    getProps: () => ({
+      options: [
+        { name: t`Area`, value: "area" },
+        { name: t`Radius`, value: "radius" },
+      ],
+    }),
+  },
+  "rose.show_legend": {
+    getSection: () => t`Display`,
+    get title() {
+      return t`Show legend`;
+    },
+    widget: "toggle",
+    getDefault: () => true,
+    persistDefault: true,
+    inline: true,
+  },
+  "rose.show_labels": {
+    getSection: () => t`Display`,
+    get title() {
+      return t`Show labels`;
+    },
+    widget: "toggle",
+    getDefault: () => true,
+    persistDefault: true,
+    inline: true,
+  },
 };
 
 export const ROSE_CHART_DEFINITION: VisualizationDefinition = {

@@ -78,5 +78,15 @@ describe("WORD_CLOUD_DEFINITION", () => {
       );
     });
   });
+
+  describe("settings", () => {
+    it("exposes stopwords with an empty default", () => {
+      const settings = WORD_CLOUD_DEFINITION.settings;
+      expect(settings["wordcloud.dimension"]).toBeDefined();
+      expect(settings["wordcloud.metric"]).toBeDefined();
+      expect(settings["wordcloud.stopwords"]?.getDefault?.()).toBe("");
+    });
+  });
+
 });
 

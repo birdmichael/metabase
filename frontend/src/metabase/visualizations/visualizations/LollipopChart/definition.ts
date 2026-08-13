@@ -47,6 +47,17 @@ export const SETTINGS_DEFINITIONS: VisualizationSettingsDefinitions = {
     autoOpenWhenUnset: false,
     getDefault: ([{ data }]) => metricColumns(data)[0]?.name,
   }),
+
+  "lollipop.show_values": {
+    getSection: () => t`Display`,
+    get title() {
+      return t`Show values`;
+    },
+    widget: "toggle",
+    getDefault: () => false,
+    persistDefault: true,
+    inline: true,
+  },
 };
 
 export const LOLLIPOP_CHART_DEFINITION: VisualizationDefinition = {

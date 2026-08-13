@@ -70,5 +70,26 @@ describe("getRadialBarChartOption", () => {
     );
     expect(option.animation).toBe(false);
   });
+
+  it("applies scale max and label visibility", () => {
+    const option = getRadialBarChartOption(
+      rawSeries,
+      {
+        "radialbar.dimension": "Category",
+        "radialbar.metric": "Sales",
+        "radialbar.max": 100,
+        "radialbar.show_labels": false,
+      },
+      renderingContext,
+      true,
+    );
+    expect(option.angleAxis).toEqual(expect.objectContaining({ max: 100 }));
+    expect(option.radiusAxis).toEqual(
+      expect.objectContaining({
+        axisLabel: expect.objectContaining({ show: false }),
+      }),
+    );
+  });
+
 });
 

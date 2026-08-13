@@ -50,6 +50,17 @@ export const SETTINGS_DEFINITIONS: VisualizationSettingsDefinitions = {
     persistDefault: true,
     dashboard: true,
   },
+
+  "bullet.show_ranges": {
+    getSection: () => t`Display`,
+    get title() {
+      return t`Show ranges`;
+    },
+    widget: "toggle",
+    getDefault: () => true,
+    persistDefault: true,
+    inline: true,
+  },
 };
 
 export const BULLET_CHART_DEFINITION: VisualizationDefinition = {

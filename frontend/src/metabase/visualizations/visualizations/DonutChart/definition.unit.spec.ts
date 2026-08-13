@@ -80,5 +80,17 @@ describe("DONUT_CHART_DEFINITION", () => {
       );
     });
   });
+
+  describe("settings", () => {
+    it("defaults legend and total on, labels off", () => {
+      const settings = DONUT_CHART_DEFINITION.settings;
+      expect(settings["donut.dimension"]).toBeDefined();
+      expect(settings["donut.metric"]).toBeDefined();
+      expect(settings["donut.show_legend"]?.getDefault?.()).toBe(true);
+      expect(settings["donut.show_labels"]?.getDefault?.()).toBe(false);
+      expect(settings["donut.show_total"]?.getDefault?.()).toBe(true);
+    });
+  });
+
 });
 

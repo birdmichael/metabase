@@ -81,7 +81,13 @@ export function getPyramidChartOption(
     tooltip: {
       trigger: "item",
     },
-    legend: { show: true },
+    legend: {
+      show: settings["pyramid.show_legend"] !== false,
+      textStyle: {
+        color: renderingContext.getColor("text-secondary"),
+        fontFamily: renderingContext.fontFamily,
+      },
+    },
     grid: {
       containLabel: true,
       left: 16,
@@ -114,6 +120,12 @@ export function getPyramidChartOption(
         stack: "pyramid",
         data: order.map((name) => -(leftTotals.get(name) ?? 0)),
         itemStyle: { color: colors[leftCol.name] },
+        label: {
+          show: settings["pyramid.show_values"] === true,
+          formatter: (params: { value: number }) => String(Math.abs(params.value)),
+          color: renderingContext.getColor("text-primary"),
+          fontFamily: renderingContext.fontFamily,
+        },
       },
       {
         type: "bar",
@@ -121,6 +133,11 @@ export function getPyramidChartOption(
         stack: "pyramid",
         data: order.map((name) => rightTotals.get(name) ?? 0),
         itemStyle: { color: colors[rightCol.name] },
+        label: {
+          show: settings["pyramid.show_values"] === true,
+          color: renderingContext.getColor("text-primary"),
+          fontFamily: renderingContext.fontFamily,
+        },
       },
     ],
   } as EChartsCoreOption;

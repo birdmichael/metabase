@@ -88,4 +88,23 @@ describe("getSunburstChartOption", () => {
     expect(option.animation).toBe(true);
     expect(option.animationDuration).toBe(500);
   });
+
+  it("hides labels when configured", () => {
+    const option = getSunburstChartOption(
+      rawSeries,
+      {
+        "sunburst.dimensions": ["Region", "Country"],
+        "sunburst.metric": "Sales",
+        "sunburst.show_labels": false,
+      },
+      renderingContext,
+      true,
+    );
+    expect(option.series).toEqual([
+      expect.objectContaining({
+        label: expect.objectContaining({ show: false }),
+      }),
+    ]);
+  });
+
 });

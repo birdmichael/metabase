@@ -72,6 +72,8 @@ export function getBubbleChartOption(
     settings["series_settings.colors"],
   );
   const brand = renderingContext.getColor("core-brand");
+  const showLegend =
+    settings["bubble.show_legend"] !== false && categories.length > 0;
 
   return {
     ...getEChartsAnimationOptions(isAnimated),
@@ -81,6 +83,14 @@ export function getBubbleChartOption(
     },
     tooltip: {
       trigger: "item",
+    },
+    legend: {
+      show: showLegend,
+      data: categories,
+      textStyle: {
+        color: renderingContext.getColor("text-secondary"),
+        fontFamily: renderingContext.fontFamily,
+      },
     },
     grid: {
       containLabel: true,

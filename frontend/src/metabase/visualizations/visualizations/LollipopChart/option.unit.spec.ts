@@ -67,5 +67,24 @@ describe("getLollipopChartOption", () => {
     );
     expect(option.animation).toBe(false);
   });
+
+  it("shows values when configured", () => {
+    const option = getLollipopChartOption(
+      rawSeries,
+      {
+        "lollipop.dimension": "Category",
+        "lollipop.metric": "Sales",
+        "lollipop.show_values": true,
+      },
+      renderingContext,
+      true,
+    );
+    expect(option.series[0]).toEqual(
+      expect.objectContaining({
+        label: expect.objectContaining({ show: true }),
+      }),
+    );
+  });
+
 });
 

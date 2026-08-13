@@ -39,6 +39,17 @@ export const SETTINGS_DEFINITIONS: VisualizationSettingsDefinitions = {
     persistDefault: true,
     dashboard: true,
   },
+
+  "liquid.show_percent": {
+    getSection: () => t`Display`,
+    get title() {
+      return t`Show percent`;
+    },
+    widget: "toggle",
+    getDefault: () => true,
+    persistDefault: true,
+    inline: true,
+  },
 };
 
 export const LIQUID_FILL_DEFINITION: VisualizationDefinition = {
