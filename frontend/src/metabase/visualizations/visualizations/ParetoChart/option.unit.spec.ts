@@ -69,5 +69,26 @@ describe("getParetoChartOption", () => {
     );
     expect(option.animation).toBe(false);
   });
+
+  it("shows bar values when configured", () => {
+    const option = getParetoChartOption(
+      rawSeries,
+      {
+        "pareto.dimension": "Category",
+        "pareto.metric": "Sales",
+        "pareto.show_values": true,
+        "pareto.show_legend": false,
+      },
+      renderingContext,
+      true,
+    );
+    expect(option.legend).toEqual(expect.objectContaining({ show: false }));
+    expect(option.series[0]).toEqual(
+      expect.objectContaining({
+        label: expect.objectContaining({ show: true }),
+      }),
+    );
+  });
+
 });
 

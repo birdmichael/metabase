@@ -434,13 +434,18 @@ export type VisualizationSettingsDefinitions = {
   "boxplot.whisker_type"?: SeriesSettingDefinition<Value, Props>;
   "calendar.date"?: SeriesSettingDefinition<Value, Props>;
   "calendar.value"?: SeriesSettingDefinition<Value, Props>;
+  "calendar.color_min"?: SeriesSettingDefinition<Value, Props>;
+  "calendar.color_max"?: SeriesSettingDefinition<Value, Props>;
   "candlestick.close"?: SeriesSettingDefinition<Value, Props>;
   "candlestick.high"?: SeriesSettingDefinition<Value, Props>;
   "candlestick.low"?: SeriesSettingDefinition<Value, Props>;
   "candlestick.open"?: SeriesSettingDefinition<Value, Props>;
   "candlestick.time"?: SeriesSettingDefinition<Value, Props>;
+  "candlestick.increase_color"?: SeriesSettingDefinition<Value, Props>;
+  "candlestick.decrease_color"?: SeriesSettingDefinition<Value, Props>;
   "circlepack.dimensions"?: SeriesSettingDefinition<Value, Props>;
   "circlepack.metric"?: SeriesSettingDefinition<Value, Props>;
+  "circlepack.show_labels"?: SeriesSettingDefinition<Value, Props>;
   "card.description"?: SeriesSettingDefinition<Value, Props>;
   "card.hide_empty"?: SeriesSettingDefinition<Value, Props>;
   "card.title"?: SeriesSettingDefinition<Value, Props>;
@@ -448,9 +453,12 @@ export type VisualizationSettingsDefinitions = {
   "bubble.size"?: SeriesSettingDefinition<Value, Props>;
   "bubble.x"?: SeriesSettingDefinition<Value, Props>;
   "bubble.y"?: SeriesSettingDefinition<Value, Props>;
+  "bubble.show_legend"?: SeriesSettingDefinition<Value, Props>;
+  "bullet.dimension"?: SeriesSettingDefinition<Value, Props>;
   "bullet.actual"?: SeriesSettingDefinition<Value, Props>;
   "bullet.target"?: SeriesSettingDefinition<Value, Props>;
   "bullet.target_value"?: SeriesSettingDefinition<Value, Props>;
+  "bullet.show_ranges"?: SeriesSettingDefinition<Value, Props>;
   click_behavior?: SeriesSettingDefinition<Value, Props>;
   color?: SingleSeriesSettingDefinition<Value, Props>;
   column?: DatasetColumnSettingDefinition<Value, Props>;
@@ -466,9 +474,13 @@ export type VisualizationSettingsDefinitions = {
   display?: SingleSeriesSettingDefinition<Value, Props>;
   "donut.dimension"?: SeriesSettingDefinition<Value, Props>;
   "donut.metric"?: SeriesSettingDefinition<Value, Props>;
+  "donut.show_legend"?: SeriesSettingDefinition<Value, Props>;
+  "donut.show_labels"?: SeriesSettingDefinition<Value, Props>;
+  "donut.show_total"?: SeriesSettingDefinition<Value, Props>;
   "gantt.category"?: SeriesSettingDefinition<Value, Props>;
   "gantt.end"?: SeriesSettingDefinition<Value, Props>;
   "gantt.start"?: SeriesSettingDefinition<Value, Props>;
+  "gantt.progress"?: SeriesSettingDefinition<Value, Props>;
   "gauge.range"?: SeriesSettingDefinition<Value, Props>;
   "gauge.segments"?: SeriesSettingDefinition<
     Value,
@@ -477,7 +489,11 @@ export type VisualizationSettingsDefinitions = {
   "heatmap.value"?: SeriesSettingDefinition<Value, Props>;
   "heatmap.x"?: SeriesSettingDefinition<Value, Props>;
   "heatmap.y"?: SeriesSettingDefinition<Value, Props>;
+  "heatmap.color_min"?: SeriesSettingDefinition<Value, Props>;
+  "heatmap.color_max"?: SeriesSettingDefinition<Value, Props>;
+  "heatmap.show_values"?: SeriesSettingDefinition<Value, Props>;
   "histogram.metric"?: SeriesSettingDefinition<Value, Props>;
+  "histogram.bins"?: SeriesSettingDefinition<Value, Props>;
   "graph.colors"?: SeriesSettingDefinition<Value, Props>;
   "graph.dimensions"?: SeriesSettingDefinition<Value, Props>;
   "graph.goal_label"?: SeriesSettingDefinition<Value, Props>;
@@ -538,6 +554,8 @@ export type VisualizationSettingsDefinitions = {
   "graph.source"?: SeriesSettingDefinition<Value, Props>;
   "graph.target"?: SeriesSettingDefinition<Value, Props>;
   "graph.value"?: SeriesSettingDefinition<Value, Props>;
+  "graph.layout"?: SeriesSettingDefinition<Value, Props>;
+  "graph.show_labels"?: SeriesSettingDefinition<Value, Props>;
   "legend.is_reversed"?: SeriesSettingDefinition<Value, Props>;
   "line.interpolate"?: SingleSeriesSettingDefinition<Value, Props>;
   "line.marker_enabled"?: SingleSeriesSettingDefinition<Value, Props>;
@@ -546,8 +564,10 @@ export type VisualizationSettingsDefinitions = {
   "line.style"?: SingleSeriesSettingDefinition<Value, Props>;
   "liquid.max"?: SeriesSettingDefinition<Value, Props>;
   "liquid.metric"?: SeriesSettingDefinition<Value, Props>;
+  "liquid.show_percent"?: SeriesSettingDefinition<Value, Props>;
   "lollipop.dimension"?: SeriesSettingDefinition<Value, Props>;
   "lollipop.metric"?: SeriesSettingDefinition<Value, Props>;
+  "lollipop.show_values"?: SeriesSettingDefinition<Value, Props>;
   "link.text"?: SeriesSettingDefinition<Value, Props>;
   "link.url"?: SeriesSettingDefinition<Value, Props>;
   "map.pin_type"?: SeriesSettingDefinition<Value, Props>;
@@ -581,19 +601,31 @@ export type VisualizationSettingsDefinitions = {
   "pie.sort_rows_dimension"?: SeriesSettingDefinition<Value, Props>;
   "pareto.dimension"?: SeriesSettingDefinition<Value, Props>;
   "pareto.metric"?: SeriesSettingDefinition<Value, Props>;
+  "pareto.show_legend"?: SeriesSettingDefinition<Value, Props>;
+  "pareto.show_values"?: SeriesSettingDefinition<Value, Props>;
   prefix?: DatasetColumnSettingDefinition<Value, Props>;
   "pyramid.category"?: SeriesSettingDefinition<Value, Props>;
   "pyramid.left"?: SeriesSettingDefinition<Value, Props>;
   "pyramid.right"?: SeriesSettingDefinition<Value, Props>;
+  "pyramid.show_legend"?: SeriesSettingDefinition<Value, Props>;
+  "pyramid.show_values"?: SeriesSettingDefinition<Value, Props>;
   "progress.color"?: SeriesSettingDefinition<Value, Props>;
   "progress.goal"?: SeriesSettingDefinition<Value, ChartSettingGoalInputProps>;
   "progress.value"?: SeriesSettingDefinition<Value, Props>;
   "radar.dimension"?: SeriesSettingDefinition<Value, Props>;
   "radar.metrics"?: SeriesSettingDefinition<Value, Props>;
+  "radar.scale_max"?: SeriesSettingDefinition<Value, Props>;
+  "radar.show_legend"?: SeriesSettingDefinition<Value, Props>;
+  "radar.show_labels"?: SeriesSettingDefinition<Value, Props>;
   "radialbar.dimension"?: SeriesSettingDefinition<Value, Props>;
   "radialbar.metric"?: SeriesSettingDefinition<Value, Props>;
+  "radialbar.max"?: SeriesSettingDefinition<Value, Props>;
+  "radialbar.show_labels"?: SeriesSettingDefinition<Value, Props>;
   "rose.dimension"?: SeriesSettingDefinition<Value, Props>;
   "rose.metric"?: SeriesSettingDefinition<Value, Props>;
+  "rose.rose_type"?: SeriesSettingDefinition<Value, Props>;
+  "rose.show_legend"?: SeriesSettingDefinition<Value, Props>;
+  "rose.show_labels"?: SeriesSettingDefinition<Value, Props>;
   "sankey.edge_color"?: SeriesSettingDefinition<Value, Props>;
   "sankey.label_value_formatting"?: SeriesSettingDefinition<Value, Props>;
   "sankey.node_align"?: SeriesSettingDefinition<Value, Props>;
@@ -617,6 +649,7 @@ export type VisualizationSettingsDefinitions = {
   suffix?: DatasetColumnSettingDefinition<Value, Props>;
   "sunburst.dimensions"?: SeriesSettingDefinition<Value, Props>;
   "sunburst.metric"?: SeriesSettingDefinition<Value, Props>;
+  "sunburst.show_labels"?: SeriesSettingDefinition<Value, Props>;
   "table.columns"?: SeriesSettingDefinition<
     Value,
     ChartSettingTableColumnsProps
@@ -639,8 +672,10 @@ export type VisualizationSettingsDefinitions = {
   view_as?: SeriesSettingDefinition<Value, Props>;
   "waffle.dimension"?: SeriesSettingDefinition<Value, Props>;
   "waffle.metric"?: SeriesSettingDefinition<Value, Props>;
+  "waffle.show_legend"?: SeriesSettingDefinition<Value, Props>;
   "wordcloud.dimension"?: SeriesSettingDefinition<Value, Props>;
   "wordcloud.metric"?: SeriesSettingDefinition<Value, Props>;
+  "wordcloud.stopwords"?: SeriesSettingDefinition<Value, Props>;
   "waterfall.decrease_color"?: SeriesSettingDefinition<Value, Props>;
   "waterfall.increase_color"?: SeriesSettingDefinition<Value, Props>;
   "waterfall.show_total"?: SeriesSettingDefinition<Value, Props>;

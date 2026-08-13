@@ -2,7 +2,10 @@ import { t } from "ttag";
 
 import { ChartSettingsError } from "metabase/visualizations/lib/errors";
 import { columnSettings } from "metabase/visualizations/lib/settings/column";
-import { metricSetting } from "metabase/visualizations/lib/settings/utils";
+import {
+  dimensionSetting,
+  metricSetting,
+} from "metabase/visualizations/lib/settings/utils";
 import {
   getDefaultSize,
   getMinSize,
@@ -12,13 +15,27 @@ import type {
   VisualizationDefinition,
   VisualizationSettingsDefinitions,
 } from "metabase/visualizations/types";
-import { isMetric } from "metabase-lib/v1/types/utils/isa";
+import { isDimension, isMetric } from "metabase-lib/v1/types/utils/isa";
 import type { DatasetData, RawSeries } from "metabase-types/api";
+
+const dimensionColumns = (data: DatasetData) =>
+  data.cols.filter((col) => isDimension(col) && !isMetric(col));
 
 const metricColumns = (data: DatasetData) => data.cols.filter(isMetric);
 
 export const SETTINGS_DEFINITIONS: VisualizationSettingsDefinitions = {
   ...columnSettings({ getHidden: () => true }),
+  ...dimensionSetting("bullet.dimension", {
+    getSection: () => t`Data`,
+    get title() {
+      return t`Dimension`;
+    },
+    showColumnSetting: true,
+    persistDefault: true,
+    dashboard: false,
+    autoOpenWhenUnset: false,
+    getDefault: ([{ data }]) => dimensionColumns(data)[0]?.name,
+  }),
   ...metricSetting("bullet.actual", {
     getSection: () => t`Data`,
     get title() {
@@ -48,7 +65,17 @@ export const SETTINGS_DEFINITIONS: VisualizationSettingsDefinitions = {
     },
     widget: "number",
     persistDefault: true,
-    dashboard: true,
+  },
+
+  "bullet.show_ranges": {
+    getSection: () => t`Display`,
+    get title() {
+      return t`Show ranges`;
+    },
+    widget: "toggle",
+    getDefault: () => true,
+    persistDefault: true,
+    inline: true,
   },
 };
 
@@ -63,7 +90,7 @@ export const BULLET_CHART_DEFINITION: VisualizationDefinition = {
   defaultSize: getDefaultSize("bullet"),
   disableVisualizer: true,
   maxMetricsSupported: 2,
-  maxDimensionsSupported: 0,
+  maxDimensionsSupported: 1,
   hasEmptyState: true,
   isSensible: (data: DatasetData) => {
     const { rows } = data;
@@ -87,4 +114,3 @@ export const BULLET_CHART_DEFINITION: VisualizationDefinition = {
     ...SETTINGS_DEFINITIONS,
   },
 };
-

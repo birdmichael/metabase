@@ -81,9 +81,14 @@ export function getHeatmapChartOption(
     return [x, y, value];
   });
   const values = heatmapData.map((point) => point[2]);
-  const minValue = values.length === 0 ? 0 : Math.min(...values);
-  const rawMax = values.length === 0 ? 1 : Math.max(...values);
+  const dataMin = values.length === 0 ? 0 : Math.min(...values);
+  const dataMax = values.length === 0 ? 1 : Math.max(...values);
+  const configuredMin = toFiniteNumber(settings["heatmap.color_min"] as RowValue);
+  const configuredMax = toFiniteNumber(settings["heatmap.color_max"] as RowValue);
+  const minValue = configuredMin ?? dataMin;
+  const rawMax = configuredMax ?? dataMax;
   const maxValue = rawMax === minValue ? minValue + 1 : rawMax;
+  const showValues = settings["heatmap.show_values"] === true;
   const brand = renderingContext.getColor("core-brand");
   const lightBrand = renderingContext.getColor("background_page-primary");
 
@@ -147,6 +152,11 @@ export function getHeatmapChartOption(
         type: "heatmap",
         name: valueCol.display_name || valueCol.name,
         data: heatmapData,
+        label: {
+          show: showValues,
+          color: renderingContext.getColor("text-primary"),
+          fontFamily: renderingContext.fontFamily,
+        },
         emphasis: {
           itemStyle: {
             shadowBlur: 8,

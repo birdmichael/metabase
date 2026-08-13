@@ -32,6 +32,19 @@ export const SETTINGS_DEFINITIONS: VisualizationSettingsDefinitions = {
     autoOpenWhenUnset: false,
     getDefault: ([{ data }]) => numericColumns(data)[0]?.name,
   }),
+
+  "histogram.bins": {
+    getSection: () => t`Display`,
+    get title() {
+      return t`Bins`;
+    },
+    widget: "number",
+    persistDefault: true,
+    getDefault: () => 10,
+    getProps: () => ({
+      options: { isInteger: true, isNonNegative: true },
+    }),
+  },
 };
 
 export const HISTOGRAM_CHART_DEFINITION: VisualizationDefinition = {
@@ -69,4 +82,3 @@ export const HISTOGRAM_CHART_DEFINITION: VisualizationDefinition = {
     ...SETTINGS_DEFINITIONS,
   },
 };
-

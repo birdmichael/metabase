@@ -16,7 +16,7 @@ const columns = [
     display_name: "Ratio",
     base_type: "type/Number",
     semantic_type: "type/Number",
-  })
+  }),
 ];
 
 const rows = [[0.65]];
@@ -63,5 +63,14 @@ describe("LIQUID_FILL_DEFINITION", () => {
       );
     });
   });
-});
 
+  describe("settings", () => {
+    it("exposes liquid.max in Display so it is editable in question settings", () => {
+      const settings = LIQUID_FILL_DEFINITION.settings;
+      expect(settings["liquid.max"]?.widget).toBe("number");
+      expect(settings["liquid.max"]?.getSection?.()).toBe("Display");
+      expect(settings["liquid.max"]?.dashboard).toBeUndefined();
+      expect(settings["liquid.show_percent"]?.getDefault?.()).toBe(true);
+    });
+  });
+});

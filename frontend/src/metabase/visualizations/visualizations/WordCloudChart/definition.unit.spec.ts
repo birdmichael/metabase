@@ -78,5 +78,16 @@ describe("WORD_CLOUD_DEFINITION", () => {
       );
     });
   });
-});
 
+  describe("settings", () => {
+    it("exposes stopwords in Display as an editable text field", () => {
+      const settings = WORD_CLOUD_DEFINITION.settings;
+      expect(settings["wordcloud.dimension"]).toBeDefined();
+      expect(settings["wordcloud.metric"]).toBeDefined();
+      expect(settings["wordcloud.stopwords"]?.widget).toBe("input");
+      expect(settings["wordcloud.stopwords"]?.getSection?.()).toBe("Display");
+      expect(settings["wordcloud.stopwords"]?.dashboard).toBeUndefined();
+      expect(settings["wordcloud.stopwords"]?.getDefault?.()).toBe("");
+    });
+  });
+});

@@ -21,6 +21,12 @@ const toFiniteNumber = (value: RowValue): number | null => {
 const findColumn = (cols: DatasetColumn[], name: string | undefined) =>
   name == null ? undefined : cols.find((col) => col.name === name);
 
+type BulletRow = {
+  name: string;
+  actual: number;
+  target: number | null;
+};
+
 export function getBulletChartOption(
   rawSeries: RawSeries,
   settings: ComputedVisualizationSettings,
@@ -31,6 +37,7 @@ export function getBulletChartOption(
   const { cols, rows } = data;
   const actualCol = findColumn(cols, settings["bullet.actual"]);
   const targetCol = findColumn(cols, settings["bullet.target"]);
+  const dimensionCol = findColumn(cols, settings["bullet.dimension"]);
 
   if (actualCol == null) {
     return {
@@ -41,22 +48,46 @@ export function getBulletChartOption(
 
   const actualIdx = cols.indexOf(actualCol);
   const targetIdx = targetCol == null ? -1 : cols.indexOf(targetCol);
-  let actual = 0;
-  let targetFromColumn: number | null = null;
-  for (const row of rows) {
-    actual += toFiniteNumber(row[actualIdx]) ?? 0;
-    if (targetIdx >= 0) {
-      targetFromColumn = (targetFromColumn ?? 0) + (toFiniteNumber(row[targetIdx]) ?? 0);
-    }
-  }
+  const dimensionIdx = dimensionCol == null ? -1 : cols.indexOf(dimensionCol);
   const settingTarget = toFiniteNumber(
     settings["bullet.target_value"] as RowValue,
   );
-  const target = targetFromColumn ?? settingTarget;
-  const maxValue = Math.max(actual, target ?? 0, 1);
+  const grouped = new Map<string, BulletRow>();
+  const order: string[] = [];
+
+  for (const row of rows) {
+    const name =
+      dimensionIdx >= 0 && row[dimensionIdx] != null
+        ? String(row[dimensionIdx])
+        : actualCol.display_name || actualCol.name;
+    if (!grouped.has(name)) {
+      order.push(name);
+      grouped.set(name, { name, actual: 0, target: null });
+    }
+    const item = grouped.get(name);
+    if (item == null) {
+      continue;
+    }
+    item.actual += toFiniteNumber(row[actualIdx]) ?? 0;
+    if (targetIdx >= 0) {
+      item.target = (item.target ?? 0) + (toFiniteNumber(row[targetIdx]) ?? 0);
+    } else if (settingTarget != null) {
+      item.target = settingTarget;
+    }
+  }
+
+  const items = order
+    .map((name) => grouped.get(name))
+    .filter((item): item is BulletRow => item != null);
+  const maxValue = Math.max(
+    1,
+    ...items.map((item) => Math.max(item.actual, item.target ?? 0)),
+  );
   const poor = maxValue * 0.5;
   const satisfactory = maxValue * 0.8;
   const brand = renderingContext.getColor("core-brand");
+  const showRanges = settings["bullet.show_ranges"] !== false;
+  const categories = items.map((item) => item.name);
 
   return {
     ...getEChartsAnimationOptions(isAnimated),
@@ -83,67 +114,82 @@ export function getBulletChartOption(
     },
     yAxis: {
       type: "category",
-      data: [actualCol.display_name || actualCol.name],
+      data: categories,
+      inverse: true,
       axisLabel: {
         color: renderingContext.getColor("text-secondary"),
         fontFamily: renderingContext.fontFamily,
       },
     },
     series: [
-      {
-        type: "bar",
-        name: "Poor",
-        data: [poor],
-        barGap: "-100%",
-        barWidth: 22,
-        itemStyle: { color: "rgba(234, 84, 85, 0.25)" },
-        silent: true,
-        z: 1,
-      },
-      {
-        type: "bar",
-        name: "Satisfactory",
-        data: [satisfactory],
-        barGap: "-100%",
-        barWidth: 22,
-        itemStyle: { color: "rgba(248, 192, 76, 0.25)" },
-        silent: true,
-        z: 2,
-      },
-      {
-        type: "bar",
-        name: "Good",
-        data: [maxValue],
-        barGap: "-100%",
-        barWidth: 22,
-        itemStyle: { color: "rgba(136, 188, 80, 0.25)" },
-        silent: true,
-        z: 3,
-      },
+      ...(showRanges
+        ? [
+            {
+              type: "bar",
+              name: "Poor",
+              data: items.map(() => poor),
+              barGap: "-100%",
+              barWidth: 22,
+              itemStyle: {
+                color: renderingContext.getColor("error"),
+                opacity: 0.25,
+              },
+              silent: true,
+              z: 1,
+            },
+            {
+              type: "bar",
+              name: "Satisfactory",
+              data: items.map(() => satisfactory),
+              barGap: "-100%",
+              barWidth: 22,
+              itemStyle: {
+                color: renderingContext.getColor("warning"),
+                opacity: 0.25,
+              },
+              silent: true,
+              z: 2,
+            },
+            {
+              type: "bar",
+              name: "Good",
+              data: items.map(() => maxValue),
+              barGap: "-100%",
+              barWidth: 22,
+              itemStyle: {
+                color: renderingContext.getColor("success"),
+                opacity: 0.25,
+              },
+              silent: true,
+              z: 3,
+            },
+          ]
+        : []),
       {
         type: "bar",
         name: actualCol.display_name || actualCol.name,
-        data: [actual],
+        data: items.map((item) => item.actual),
         barWidth: 10,
         itemStyle: { color: brand },
         z: 4,
       },
-      ...(target == null
-        ? []
-        : [
+      ...(items.some((item) => item.target != null)
+        ? [
             {
               type: "scatter",
               name: "Target",
               symbol: "rect",
               symbolSize: [4, 22],
-              data: [[target, 0]],
+              data: items.map((item, index) =>
+                item.target == null ? null : [item.target, index],
+              ),
               itemStyle: {
                 color: renderingContext.getColor("text-primary"),
               },
               z: 5,
             },
-          ]),
+          ]
+        : []),
     ],
   } as EChartsCoreOption;
 }
-

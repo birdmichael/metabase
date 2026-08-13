@@ -62,6 +62,8 @@ export function getGraphChartOption(
   const names = [...nodes.keys()];
   const colors = getColorsForValues(names, settings["series_settings.colors"]);
   const maxValue = Math.max(1, ...nodes.values());
+  const layout = settings["graph.layout"] === "circular" ? "circular" : "force";
+  const showLabels = settings["graph.show_labels"] !== false;
 
   return {
     ...getEChartsAnimationOptions(isAnimated),
@@ -75,7 +77,7 @@ export function getGraphChartOption(
     series: [
       {
         type: "graph",
-        layout: "force",
+        layout,
         roam: true,
         draggable: true,
         force: {
@@ -84,7 +86,7 @@ export function getGraphChartOption(
           gravity: 0.08,
         },
         label: {
-          show: true,
+          show: showLabels,
           color: renderingContext.getColor("text-primary"),
           fontFamily: renderingContext.fontFamily,
         },

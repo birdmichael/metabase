@@ -65,4 +65,20 @@ describe("getCalendarHeatmapOption", () => {
     ]);
     expect(option.animation).toBe(false);
   });
+
+  it("applies visualMap range from settings", () => {
+    const option = getCalendarHeatmapOption(
+      rawSeries,
+      {
+        "calendar.date": "Date",
+        "calendar.value": "Count",
+        "calendar.color_min": 0,
+        "calendar.color_max": 20,
+      },
+      renderingContext,
+      false,
+    );
+    expect(option.visualMap).toEqual(expect.objectContaining({ min: 0, max: 20 }));
+  });
+
 });

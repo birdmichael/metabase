@@ -74,6 +74,8 @@ export function getParetoChartOption(
     return grand === 0 ? 0 : (running / grand) * 100;
   });
   const brand = renderingContext.getColor("core-brand");
+  const showLegend = settings["pareto.show_legend"] !== false;
+  const showValues = settings["pareto.show_values"] === true;
 
   return {
     ...getEChartsAnimationOptions(isAnimated),
@@ -83,6 +85,13 @@ export function getParetoChartOption(
     },
     tooltip: {
       trigger: "item",
+    },
+    legend: {
+      show: showLegend,
+      textStyle: {
+        color: renderingContext.getColor("text-secondary"),
+        fontFamily: renderingContext.fontFamily,
+      },
     },
     grid: {
       containLabel: true,
@@ -126,6 +135,12 @@ export function getParetoChartOption(
           value: totals.get(name) ?? 0,
           itemStyle: { color: colors[name] },
         })),
+        label: {
+          show: showValues,
+          position: "top",
+          color: renderingContext.getColor("text-primary"),
+          fontFamily: renderingContext.fontFamily,
+        },
       },
       {
         type: "line",

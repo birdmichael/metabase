@@ -65,6 +65,9 @@ export function getDonutChartOption(
   const colors = getColorsForValues(order, settings["series_settings.colors"]);
   const total = order.reduce((sum, name) => sum + (totals.get(name) ?? 0), 0);
   const totalLabel = Number.isInteger(total) ? String(total) : total.toFixed(1);
+  const showLegend = settings["donut.show_legend"] !== false;
+  const showLabels = settings["donut.show_labels"] === true;
+  const showTotal = settings["donut.show_total"] !== false;
 
   return {
     ...getEChartsAnimationOptions(isAnimated),
@@ -75,23 +78,32 @@ export function getDonutChartOption(
     tooltip: {
       trigger: "item",
     },
-    graphic: [
-      {
-        type: "text",
-        left: "center",
-        top: "center",
-        style: {
-          text: totalLabel,
-          fill: renderingContext.getColor("text-primary"),
-          fontSize: 18,
-          fontWeight: 600,
-          fontFamily: renderingContext.fontFamily,
-          align: "center",
-          verticalAlign: "middle",
-        },
-        z: 100,
+    legend: {
+      show: showLegend,
+      textStyle: {
+        color: renderingContext.getColor("text-secondary"),
+        fontFamily: renderingContext.fontFamily,
       },
-    ],
+    },
+    graphic: showTotal
+      ? [
+          {
+            type: "text",
+            left: "center",
+            top: "center",
+            style: {
+              text: totalLabel,
+              fill: renderingContext.getColor("text-primary"),
+              fontSize: 18,
+              fontWeight: 600,
+              fontFamily: renderingContext.fontFamily,
+              align: "center",
+              verticalAlign: "middle",
+            },
+            z: 100,
+          },
+        ]
+      : [],
     series: [
       {
         type: "pie",
@@ -102,7 +114,9 @@ export function getDonutChartOption(
           borderWidth: 1,
         },
         label: {
-          show: false,
+          show: showLabels,
+          color: renderingContext.getColor("text-primary"),
+          fontFamily: renderingContext.fontFamily,
         },
         data: order.map((name) => ({
           name,

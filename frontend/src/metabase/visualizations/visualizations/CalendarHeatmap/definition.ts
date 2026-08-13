@@ -55,6 +55,31 @@ export const SETTINGS_DEFINITIONS: VisualizationSettingsDefinitions = {
     autoOpenWhenUnset: false,
     getDefault: ([{ data }]) => defaultCalendarColumns(data).value,
   }),
+
+  "calendar.color_min": {
+    getSection: () => t`Display`,
+    get title() {
+      return t`Color scale min`;
+    },
+    widget: "number",
+    getProps: () => ({
+      get placeholder() {
+        return t`Auto`;
+      },
+    }),
+  },
+  "calendar.color_max": {
+    getSection: () => t`Display`,
+    get title() {
+      return t`Color scale max`;
+    },
+    widget: "number",
+    getProps: () => ({
+      get placeholder() {
+        return t`Auto`;
+      },
+    }),
+  },
 };
 
 export const CALENDAR_HEATMAP_DEFINITION: VisualizationDefinition = {

@@ -37,10 +37,14 @@ export type PackedCircle = {
   y: number;
   r: number;
   depth: number;
+  isParent: boolean;
 };
 
 const dist = (ax: number, ay: number, bx: number, by: number) =>
   Math.hypot(ax - bx, ay - by);
+
+const radiusFromValue = (value: number) =>
+  Math.max(6, Math.sqrt(Math.max(value, 0)) * 6);
 
 const placeTouching = (
   a: PackedCircle,
@@ -67,13 +71,29 @@ const placeTouching = (
   return { x: a.x + vx * mid - vy * h, y: a.y + vy * mid + vx * h };
 };
 
-export function packSiblings(items: { name: string; value: number; depth: number }[]): PackedCircle[] {
+export function packSiblings(
+  items: {
+    name: string;
+    value: number;
+    depth: number;
+    r?: number;
+    isParent?: boolean;
+  }[],
+): PackedCircle[] {
   if (items.length === 0) {
     return [];
   }
-  const radii = items.map((item) => Math.max(4, Math.sqrt(Math.max(item.value, 0)) * 6));
+  const radii = items.map((item) => item.r ?? radiusFromValue(item.value));
   const circles: PackedCircle[] = [
-    { name: items[0].name, value: items[0].value, x: 0, y: 0, r: radii[0], depth: items[0].depth },
+    {
+      name: items[0].name,
+      value: items[0].value,
+      x: 0,
+      y: 0,
+      r: radii[0],
+      depth: items[0].depth,
+      isParent: items[0].isParent === true,
+    },
   ];
   if (items.length > 1) {
     circles.push({
@@ -83,6 +103,7 @@ export function packSiblings(items: { name: string; value: number; depth: number
       y: 0,
       r: radii[1],
       depth: items[1].depth,
+      isParent: items[1].isParent === true,
     });
   }
   for (let i = 2; i < items.length; i++) {
@@ -94,7 +115,8 @@ export function packSiblings(items: { name: string; value: number; depth: number
         if (
           pos &&
           circles.every(
-            (circle) => dist(circle.x, circle.y, pos.x, pos.y) >= circle.r + r - 0.01,
+            (circle) =>
+              dist(circle.x, circle.y, pos.x, pos.y) >= circle.r + r - 0.01,
           )
         ) {
           placed = {
@@ -104,6 +126,7 @@ export function packSiblings(items: { name: string; value: number; depth: number
             y: pos.y,
             r,
             depth: items[i].depth,
+            isParent: items[i].isParent === true,
           };
           break outer;
         }
@@ -117,19 +140,104 @@ export function packSiblings(items: { name: string; value: number; depth: number
         y: 0,
         r,
         depth: items[i].depth,
+        isParent: items[i].isParent === true,
       },
     );
   }
   return circles;
 }
 
-const toLeaves = (node: PackNode, depth: number): { name: string; value: number; depth: number }[] => {
+type LayoutGroup = {
+  circles: PackedCircle[];
+  r: number;
+};
+
+const layoutNode = (node: PackNode, depth: number): LayoutGroup => {
   if (node.children.size === 0) {
-    return [{ name: node.name, value: node.value, depth }];
+    const r = radiusFromValue(node.value);
+    return {
+      circles: [
+        {
+          name: node.name,
+          value: node.value,
+          x: 0,
+          y: 0,
+          r,
+          depth,
+          isParent: false,
+        },
+      ],
+      r,
+    };
   }
-  return Array.from(node.children.values()).flatMap((child) =>
-    toLeaves(child, depth + 1),
+
+  const childNodes = Array.from(node.children.values());
+  const childLayouts = childNodes.map((child) => layoutNode(child, depth + 1));
+  const packed = packSiblings(
+    childLayouts.map((layout, index) => ({
+      name: childNodes[index].name,
+      value: childNodes[index].value,
+      depth,
+      r: layout.r,
+      isParent: childNodes[index].children.size > 0,
+    })),
   );
+
+  const circles: PackedCircle[] = [];
+  packed.forEach((slot, index) => {
+    const child = childLayouts[index];
+    for (const circle of child.circles) {
+      circles.push({
+        ...circle,
+        x: circle.x + slot.x,
+        y: circle.y + slot.y,
+      });
+    }
+  });
+
+  const cx =
+    packed.reduce((sum, slot) => sum + slot.x, 0) / Math.max(packed.length, 1);
+  const cy =
+    packed.reduce((sum, slot) => sum + slot.y, 0) / Math.max(packed.length, 1);
+  const r =
+    Math.max(
+      0,
+      ...packed.map((slot) => Math.hypot(slot.x - cx, slot.y - cy) + slot.r),
+    ) + 8;
+
+  const centered = circles.map((circle) => ({
+    ...circle,
+    x: circle.x - cx,
+    y: circle.y - cy,
+  }));
+
+  if (node.name !== "") {
+    centered.unshift({
+      name: node.name,
+      value: node.value,
+      x: 0,
+      y: 0,
+      r,
+      depth,
+      isParent: true,
+    });
+  }
+
+  return { circles: centered, r };
+};
+
+const equalBounds = (circles: PackedCircle[]) => {
+  if (circles.length === 0) {
+    return { minX: -1, maxX: 1, minY: -1, maxY: 1 };
+  }
+  const minX = Math.min(...circles.map((circle) => circle.x - circle.r));
+  const maxX = Math.max(...circles.map((circle) => circle.x + circle.r));
+  const minY = Math.min(...circles.map((circle) => circle.y - circle.r));
+  const maxY = Math.max(...circles.map((circle) => circle.y + circle.r));
+  const cx = (minX + maxX) / 2;
+  const cy = (minY + maxY) / 2;
+  const half = (Math.max(maxX - minX, maxY - minY, 1) / 2) * 1.12;
+  return { minX: cx - half, maxX: cx + half, minY: cy - half, maxY: cy + half };
 };
 
 export function getCirclePackChartOption(
@@ -176,12 +284,10 @@ export function getCirclePackChartOption(
     }
   }
 
-  const leaves = Array.from(root.children.values()).flatMap((child) =>
-    toLeaves(child, 0),
-  );
-  const packed = packSiblings(leaves);
+  const packed = layoutNode(root, -1).circles;
   const names = packed.map((circle) => circle.name);
   const colors = getColorsForValues(names, settings["series_settings.colors"]);
+  const bounds = equalBounds(packed);
 
   return {
     ...getEChartsAnimationOptions(isAnimated),
@@ -195,21 +301,13 @@ export function getCirclePackChartOption(
     grid: { left: 8, right: 8, top: 8, bottom: 8 },
     xAxis: {
       show: false,
-      min: packed.length
-        ? Math.min(...packed.map((c) => c.x - c.r)) - 4
-        : -1,
-      max: packed.length
-        ? Math.max(...packed.map((c) => c.x + c.r)) + 4
-        : 1,
+      min: bounds.minX,
+      max: bounds.maxX,
     },
     yAxis: {
       show: false,
-      min: packed.length
-        ? Math.min(...packed.map((c) => c.y - c.r)) - 4
-        : -1,
-      max: packed.length
-        ? Math.max(...packed.map((c) => c.y + c.r)) + 4
-        : 1,
+      min: bounds.minY,
+      max: bounds.maxY,
     },
     series: [
       {
@@ -224,8 +322,12 @@ export function getCirclePackChartOption(
           },
         ) => {
           const point = api.coord([api.value(0), api.value(1)]);
-          const edge = api.coord([api.value(0) + api.value(2), api.value(1)]);
-          const r = Math.abs(edge[0] - point[0]);
+          const edgeX = api.coord([api.value(0) + api.value(2), api.value(1)]);
+          const edgeY = api.coord([api.value(0), api.value(1) + api.value(2)]);
+          const r = Math.min(
+            Math.abs(edgeX[0] - point[0]),
+            Math.abs(edgeY[1] - point[1]),
+          );
           return {
             type: "circle",
             shape: { cx: point[0], cy: point[1], r },
@@ -235,9 +337,16 @@ export function getCirclePackChartOption(
         data: packed.map((circle) => ({
           name: circle.name,
           value: [circle.x, circle.y, circle.r, circle.value],
-          itemStyle: { color: colors[circle.name], opacity: 0.85 },
+          itemStyle: {
+            color: colors[circle.name],
+            opacity: circle.isParent ? 0.18 : 0.85,
+            borderColor: colors[circle.name],
+            borderWidth: circle.isParent ? 1.5 : 0,
+          },
           label: {
-            show: circle.r > 14,
+            show:
+              settings["circlepack.show_labels"] !== false &&
+              circle.r > (circle.isParent ? 22 : 14),
             formatter: circle.name,
             color: renderingContext.getColor("text-primary"),
           },
@@ -246,4 +355,3 @@ export function getCirclePackChartOption(
     ],
   } as EChartsCoreOption;
 }
-

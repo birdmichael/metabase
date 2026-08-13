@@ -70,5 +70,28 @@ describe("getGraphChartOption", () => {
     );
     expect(option.animation).toBe(false);
   });
+
+  it("applies circular layout and hides labels", () => {
+    const option = getGraphChartOption(
+      rawSeries,
+      {
+        "graph.source": "Source",
+        "graph.target": "Target",
+        "graph.value": "Weight",
+        "graph.layout": "circular",
+        "graph.show_labels": false,
+      },
+      renderingContext,
+      true,
+    );
+    expect(option.series).toEqual([
+      expect.objectContaining({
+        type: "graph",
+        layout: "circular",
+        label: expect.objectContaining({ show: false }),
+      }),
+    ]);
+  });
+
 });
 

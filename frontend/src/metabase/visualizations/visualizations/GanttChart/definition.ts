@@ -62,6 +62,23 @@ export const SETTINGS_DEFINITIONS: VisualizationSettingsDefinitions = {
     autoOpenWhenUnset: false,
     getDefault: ([{ data }]) => startEndColumns(data)[1]?.name ?? startEndColumns(data)[0]?.name,
   }),
+
+  ...fieldSetting("gantt.progress", {
+    getSection: () => t`Data`,
+    get title() {
+      return t`Progress`;
+    },
+    fieldFilter: isNumeric,
+    showColumnSetting: true,
+    persistDefault: true,
+    dashboard: false,
+    autoOpenWhenUnset: false,
+    getDefault: ([{ data }], settings) => {
+      const used = new Set([settings["gantt.start"], settings["gantt.end"]]);
+      return data.cols.find((col) => isNumeric(col) && !used.has(col.name))?.name;
+    },
+    readDependencies: ["gantt.start", "gantt.end"],
+  }),
 };
 
 export const GANTT_CHART_DEFINITION: VisualizationDefinition = {

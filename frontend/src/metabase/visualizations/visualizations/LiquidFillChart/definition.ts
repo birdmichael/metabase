@@ -30,14 +30,30 @@ export const SETTINGS_DEFINITIONS: VisualizationSettingsDefinitions = {
     autoOpenWhenUnset: false,
     getDefault: ([{ data }]) => metricColumns(data)[0]?.name,
   }),
+
   "liquid.max": {
-    getSection: () => t`Data`,
+    getSection: () => t`Display`,
     get title() {
       return t`Maximum`;
     },
     widget: "number",
     persistDefault: true,
-    dashboard: true,
+    getProps: () => ({
+      get placeholder() {
+        return t`Auto`;
+      },
+      options: { isNonNegative: true },
+    }),
+  },
+  "liquid.show_percent": {
+    getSection: () => t`Display`,
+    get title() {
+      return t`Show percent`;
+    },
+    widget: "toggle",
+    getDefault: () => true,
+    persistDefault: true,
+    inline: true,
   },
 };
 
@@ -76,4 +92,3 @@ export const LIQUID_FILL_DEFINITION: VisualizationDefinition = {
     ...SETTINGS_DEFINITIONS,
   },
 };
-

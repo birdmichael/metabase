@@ -37,9 +37,9 @@ const rows = [
 describe("HEATMAP_CHART_DEFINITION", () => {
   describe("isSensible", () => {
     it("should return true for two dimensions and a metric", () => {
-      expect(
-        isSensible(createMockDatasetData({ rows, cols: columns })),
-      ).toBe(true);
+      expect(isSensible(createMockDatasetData({ rows, cols: columns }))).toBe(
+        true,
+      );
     });
 
     it("should return false when there is only one dimension", () => {
@@ -109,6 +109,22 @@ describe("HEATMAP_CHART_DEFINITION", () => {
           section: "Data",
         }),
       );
+    });
+  });
+
+  describe("settings", () => {
+    it("exposes column mappings and display settings", () => {
+      const settings = HEATMAP_CHART_DEFINITION.settings;
+      expect(settings["heatmap.x"]).toBeDefined();
+      expect(settings["heatmap.y"]).toBeDefined();
+      expect(settings["heatmap.value"]).toBeDefined();
+      expect(settings["heatmap.color_min"]?.widget).toBe("number");
+      expect(settings["heatmap.color_min"]?.getSection?.()).toBe("Display");
+      expect(settings["heatmap.color_min"]?.dashboard).toBeUndefined();
+      expect(settings["heatmap.color_max"]?.widget).toBe("number");
+      expect(settings["heatmap.color_max"]?.getSection?.()).toBe("Display");
+      expect(settings["heatmap.color_max"]?.dashboard).toBeUndefined();
+      expect(settings["heatmap.show_values"]?.getDefault?.()).toBe(false);
     });
   });
 });

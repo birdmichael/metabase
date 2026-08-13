@@ -59,5 +59,18 @@ describe("getHistogramChartOption", () => {
     );
     expect(option.animation).toBe(false);
   });
+
+  it("uses the configured bin count", () => {
+    const option = getHistogramChartOption(
+      rawSeries,
+      { "histogram.metric": "Value", "histogram.bins": 5 },
+      renderingContext,
+      true,
+    );
+    const series = option.series as { data: number[] }[];
+    expect(series[0].data).toHaveLength(5);
+    expect(series[0].data.reduce((a, b) => a + b, 0)).toBe(20);
+  });
+
 });
 

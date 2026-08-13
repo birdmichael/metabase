@@ -20,7 +20,10 @@ const rawSeries = [
   {
     card: createMockCard(),
     data: createMockDatasetData({
-      rows: [[1, 2, 3, "A"], [4, 5, 6, "B"]],
+      rows: [
+        [1, 2, 3, "A"],
+        [4, 5, 6, "B"],
+      ],
       cols: [
         createMockColumn({
           name: "X",
@@ -44,23 +47,31 @@ const rawSeries = [
           name: "Cat",
           display_name: "Cat",
           base_type: "type/Text",
-        })
+        }),
       ],
     }),
   },
 ];
 
 describe("getBubbleChartOption", () => {
-  it("builds the expected series", () => {
+  it("builds one scatter series per category so the legend can show", () => {
     const option = getBubbleChartOption(
       rawSeries,
-      { "bubble.x": "X", "bubble.y": "Y", "bubble.size": "Size", "bubble.dimension": "Cat" },
+      {
+        "bubble.x": "X",
+        "bubble.y": "Y",
+        "bubble.size": "Size",
+        "bubble.dimension": "Cat",
+      },
       renderingContext,
       true,
     );
-    expect(option.series).toEqual([
-      expect.objectContaining({ type: "scatter" }),
-    ]);
+    const series = option.series as { type: string; name: string }[];
+    expect(series.map((item) => item.name).sort()).toEqual(["A", "B"]);
+    expect(series.every((item) => item.type === "scatter")).toBe(true);
+    expect(option.legend).toEqual(
+      expect.objectContaining({ show: true, data: ["A", "B"] }),
+    );
     expect(option.animation).toBe(true);
     expect(option.animationDuration).toBe(500);
   });
@@ -68,11 +79,31 @@ describe("getBubbleChartOption", () => {
   it("disables motion when not animated", () => {
     const option = getBubbleChartOption(
       rawSeries,
-      { "bubble.x": "X", "bubble.y": "Y", "bubble.size": "Size", "bubble.dimension": "Cat" },
+      {
+        "bubble.x": "X",
+        "bubble.y": "Y",
+        "bubble.size": "Size",
+        "bubble.dimension": "Cat",
+      },
       renderingContext,
       false,
     );
     expect(option.animation).toBe(false);
   });
-});
 
+  it("hides the legend when configured", () => {
+    const option = getBubbleChartOption(
+      rawSeries,
+      {
+        "bubble.x": "X",
+        "bubble.y": "Y",
+        "bubble.size": "Size",
+        "bubble.dimension": "Cat",
+        "bubble.show_legend": false,
+      },
+      renderingContext,
+      true,
+    );
+    expect(option.legend).toEqual(expect.objectContaining({ show: false }));
+  });
+});

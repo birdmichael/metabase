@@ -398,63 +398,98 @@ export type VisualizationSettings = {
   // Radar settings
   "radar.dimension"?: string;
   "radar.metrics"?: string[];
+  "radar.scale_max"?: number;
+  "radar.show_legend"?: boolean;
+  "radar.show_labels"?: boolean;
 
   // Heatmap settings
   "heatmap.x"?: string;
   "heatmap.y"?: string;
   "heatmap.value"?: string;
+  "heatmap.color_min"?: number;
+  "heatmap.color_max"?: number;
+  "heatmap.show_values"?: boolean;
 
   // Sunburst settings
   "sunburst.dimensions"?: string[];
   "sunburst.metric"?: string;
+  "sunburst.show_labels"?: boolean;
 
   // Rose settings
   "rose.dimension"?: string;
   "rose.metric"?: string;
+  "rose.rose_type"?: "area" | "radius";
+  "rose.show_legend"?: boolean;
+  "rose.show_labels"?: boolean;
 
   // Calendar heatmap settings
   "calendar.date"?: string;
   "calendar.value"?: string;
+  "calendar.color_min"?: number;
+  "calendar.color_max"?: number;
 
   // Everyday OSS charts
   "donut.dimension"?: string;
   "donut.metric"?: string;
+  "donut.show_legend"?: boolean;
+  "donut.show_labels"?: boolean;
+  "donut.show_total"?: boolean;
   "bubble.x"?: string;
   "bubble.y"?: string;
   "bubble.size"?: string;
   "bubble.dimension"?: string;
+  "bubble.show_legend"?: boolean;
   "wordcloud.dimension"?: string;
   "wordcloud.metric"?: string;
+  "wordcloud.stopwords"?: string;
+  "bullet.dimension"?: string;
   "bullet.actual"?: string;
   "bullet.target"?: string;
   "bullet.target_value"?: number;
+  "bullet.show_ranges"?: boolean;
   "histogram.metric"?: string;
+  "histogram.bins"?: number;
   "radialbar.dimension"?: string;
   "radialbar.metric"?: string;
+  "radialbar.max"?: number;
+  "radialbar.show_labels"?: boolean;
   "lollipop.dimension"?: string;
   "lollipop.metric"?: string;
+  "lollipop.show_values"?: boolean;
   "liquid.metric"?: string;
   "liquid.max"?: number;
+  "liquid.show_percent"?: boolean;
   "waffle.dimension"?: string;
   "waffle.metric"?: string;
+  "waffle.show_legend"?: boolean;
   "pareto.dimension"?: string;
   "pareto.metric"?: string;
+  "pareto.show_legend"?: boolean;
+  "pareto.show_values"?: boolean;
   "circlepack.dimensions"?: string[];
   "circlepack.metric"?: string;
+  "circlepack.show_labels"?: boolean;
   "graph.source"?: string;
   "graph.target"?: string;
   "graph.value"?: string;
+  "graph.layout"?: "force" | "circular";
+  "graph.show_labels"?: boolean;
   "gantt.category"?: string;
   "gantt.start"?: string;
   "gantt.end"?: string;
+  "gantt.progress"?: string;
   "candlestick.time"?: string;
   "candlestick.open"?: string;
   "candlestick.close"?: string;
   "candlestick.low"?: string;
   "candlestick.high"?: string;
+  "candlestick.increase_color"?: string;
+  "candlestick.decrease_color"?: string;
   "pyramid.category"?: string;
   "pyramid.left"?: string;
   "pyramid.right"?: string;
+  "pyramid.show_legend"?: boolean;
+  "pyramid.show_values"?: boolean;
 
   // Treemap settings
   "treemap.grouping"?: string;

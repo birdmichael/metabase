@@ -47,6 +47,30 @@ export const SETTINGS_DEFINITIONS: VisualizationSettingsDefinitions = {
     autoOpenWhenUnset: false,
     getDefault: ([{ data }]) => metricColumns(data)[0]?.name,
   }),
+
+  "radialbar.max": {
+    getSection: () => t`Display`,
+    get title() {
+      return t`Scale max`;
+    },
+    widget: "number",
+    getProps: () => ({
+      get placeholder() {
+        return t`Auto`;
+      },
+      options: { isNonNegative: true },
+    }),
+  },
+  "radialbar.show_labels": {
+    getSection: () => t`Display`,
+    get title() {
+      return t`Show labels`;
+    },
+    widget: "toggle",
+    getDefault: () => true,
+    persistDefault: true,
+    inline: true,
+  },
 };
 
 export const RADIAL_BAR_DEFINITION: VisualizationDefinition = {
@@ -88,4 +112,3 @@ export const RADIAL_BAR_DEFINITION: VisualizationDefinition = {
     ...SETTINGS_DEFINITIONS,
   },
 };
-

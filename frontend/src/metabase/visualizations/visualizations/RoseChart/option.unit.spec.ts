@@ -63,4 +63,27 @@ describe("getRoseChartOption", () => {
     expect(option.animation).toBe(true);
     expect(option.animationDuration).toBe(500);
   });
+
+  it("applies rose type, legend, and label settings", () => {
+    const option = getRoseChartOption(
+      rawSeries,
+      {
+        "rose.dimension": "Category",
+        "rose.metric": "Sales",
+        "rose.rose_type": "radius",
+        "rose.show_legend": false,
+        "rose.show_labels": false,
+      },
+      renderingContext,
+      true,
+    );
+    expect(option.series).toEqual([
+      expect.objectContaining({
+        roseType: "radius",
+        label: expect.objectContaining({ show: false }),
+      }),
+    ]);
+    expect(option.legend).toEqual(expect.objectContaining({ show: false }));
+  });
+
 });

@@ -48,6 +48,7 @@ export function getGanttChartOption(
   const categoryCol = findColumn(cols, settings["gantt.category"]);
   const startCol = findColumn(cols, settings["gantt.start"]);
   const endCol = findColumn(cols, settings["gantt.end"]);
+  const progressCol = findColumn(cols, settings["gantt.progress"]);
 
   if (categoryCol == null || startCol == null || endCol == null) {
     return {
@@ -59,9 +60,19 @@ export function getGanttChartOption(
   const categoryIdx = cols.indexOf(categoryCol);
   const startIdx = cols.indexOf(startCol);
   const endIdx = cols.indexOf(endCol);
+  const progressIdx =
+    progressCol == null || progressCol === startCol || progressCol === endCol
+      ? -1
+      : cols.indexOf(progressCol);
   const categories: string[] = [];
   const categoryIndex = new Map<string, number>();
-  const items: { category: number; start: number; end: number; name: string }[] = [];
+  const items: {
+    category: number;
+    start: number;
+    end: number;
+    name: string;
+    progress: number;
+  }[] = [];
   let isTime = false;
 
   for (const row of rows) {
@@ -83,7 +94,15 @@ export function getGanttChartOption(
       categoryIndex.set(name, index);
       categories.push(name);
     }
-    items.push({ category: index, start, end, name });
+    const rawProgress =
+      progressIdx >= 0 ? toFiniteNumber(row[progressIdx]) : null;
+    const progress =
+      rawProgress == null
+        ? 1
+        : rawProgress > 1
+          ? Math.max(0, Math.min(1, rawProgress / 100))
+          : Math.max(0, Math.min(1, rawProgress));
+    items.push({ category: index, start, end, name, progress });
   }
 
   const colors = getColorsForValues(categories, settings["series_settings.colors"]);
@@ -127,22 +146,42 @@ export function getGanttChartOption(
           const category = api.value(0);
           const start = api.coord([api.value(1), category]);
           const end = api.coord([api.value(2), category]);
+          const progress = api.value(3);
           const height = api.size([0, 1])[1] * 0.55;
+          const fullWidth = Math.max(end[0] - start[0], 2);
+          const ratio = Number.isFinite(progress) ? progress : 1;
+          const progressWidth = Math.max(fullWidth * ratio, 0);
+          const style = api.style() as { fill?: string };
           return {
-            type: "rect",
-            shape: {
-              x: start[0],
-              y: start[1] - height / 2,
-              width: Math.max(end[0] - start[0], 2),
-              height,
-            },
-            style: api.style(),
+            type: "group",
+            children: [
+              {
+                type: "rect",
+                shape: {
+                  x: start[0],
+                  y: start[1] - height / 2,
+                  width: fullWidth,
+                  height,
+                },
+                style: { ...style, opacity: 0.28 },
+              },
+              {
+                type: "rect",
+                shape: {
+                  x: start[0],
+                  y: start[1] - height / 2,
+                  width: progressWidth,
+                  height,
+                },
+                style,
+              },
+            ],
           };
         },
         encode: { x: [1, 2], y: 0 },
         data: items.map((item) => ({
           name: item.name,
-          value: [item.category, item.start, item.end],
+          value: [item.category, item.start, item.end, item.progress],
           itemStyle: { color: colors[item.name] ?? brand },
         })),
       },

@@ -34,10 +34,10 @@ const estimateWidth = (text: string, fontSize: number) =>
   Math.max(fontSize, text.length * fontSize * 0.62);
 
 const overlaps = (a: WordLayout, b: WordLayout) => {
-  const aw = estimateWidth(a.name, a.fontSize) / 2 + 2;
-  const ah = a.fontSize / 2 + 2;
-  const bw = estimateWidth(b.name, b.fontSize) / 2 + 2;
-  const bh = b.fontSize / 2 + 2;
+  const aw = estimateWidth(a.name, a.fontSize) / 2 + 4;
+  const ah = a.fontSize / 2 + 4;
+  const bw = estimateWidth(b.name, b.fontSize) / 2 + 4;
+  const bh = b.fontSize / 2 + 4;
   return Math.abs(a.x - b.x) < aw + bw && Math.abs(a.y - b.y) < ah + bh;
 };
 
@@ -51,14 +51,14 @@ export function layoutWordCloud(
   for (const item of sorted) {
     const fontSize = 12 + Math.sqrt(item.value / maxValue) * 36;
     let found: WordLayout | null = null;
-    for (let step = 0; step < 800; step++) {
+    for (let step = 0; step < 1600; step++) {
       const theta = step * 0.35;
-      const radius = 4 + 3.4 * theta;
+      const radius = step === 0 ? 0 : 8 + 4.2 * theta;
       const candidate: WordLayout = {
         name: item.name,
         value: item.value,
         x: radius * Math.cos(theta),
-        y: radius * Math.sin(theta),
+        y: radius * Math.sin(theta) * 0.72,
         fontSize,
       };
       if (placed.every((other) => !overlaps(candidate, other))) {
@@ -66,9 +66,15 @@ export function layoutWordCloud(
         break;
       }
     }
-    if (found) {
-      placed.push(found);
-    }
+    placed.push(
+      found ?? {
+        name: item.name,
+        value: item.value,
+        x: placed.length * 12,
+        y: 80 + (placed.length % 5) * 18,
+        fontSize,
+      },
+    );
   }
   return placed;
 }
@@ -112,9 +118,16 @@ export function getWordCloudChartOption(
     );
   }
 
-  const colors = getColorsForValues(order, settings["series_settings.colors"]);
+  const stopwords = new Set(
+    String(settings["wordcloud.stopwords"] ?? "")
+      .split(/[,\n]/)
+      .map((word) => word.trim().toLowerCase())
+      .filter(Boolean),
+  );
+  const kept = order.filter((name) => !stopwords.has(name.toLowerCase()));
+  const colors = getColorsForValues(kept, settings["series_settings.colors"]);
   const layout = layoutWordCloud(
-    order.map((name) => ({ name, value: Math.abs(totals.get(name) ?? 0) })),
+    kept.map((name) => ({ name, value: Math.abs(totals.get(name) ?? 0) })),
   );
 
   return {
@@ -127,23 +140,27 @@ export function getWordCloudChartOption(
       trigger: "item",
     },
     graphic: {
-      elements: layout.map((word) => ({
-        type: "text",
-        x: word.x,
-        y: word.y,
-        left: "center",
-        top: "middle",
-        style: {
-          text: word.name,
-          fontSize: word.fontSize,
-          fontFamily: renderingContext.fontFamily,
-          fill: colors[word.name],
-          textAlign: "center",
-          textVerticalAlign: "middle",
+      elements: [
+        {
+          type: "group",
+          left: "center",
+          top: "middle",
+          children: layout.map((word) => ({
+            type: "text",
+            x: word.x,
+            y: word.y,
+            style: {
+              text: word.name,
+              fontSize: word.fontSize,
+              fontFamily: renderingContext.fontFamily,
+              fill: colors[word.name],
+              textAlign: "center",
+              textVerticalAlign: "middle",
+            },
+          })),
         },
-      })),
+      ],
     },
     series: [],
   } as EChartsCoreOption;
 }
-

@@ -65,6 +65,7 @@ export function getLollipopChartOption(
   const colors = getColorsForValues(order, settings["series_settings.colors"]);
   const brand = renderingContext.getColor("core-brand");
   const values = order.map((name) => totals.get(name) ?? 0);
+  const showValues = settings["lollipop.show_values"] === true;
 
   return {
     ...getEChartsAnimationOptions(isAnimated),
@@ -106,6 +107,12 @@ export function getLollipopChartOption(
           itemStyle: { color: colors[name] ?? brand },
         })),
         barWidth: 2,
+        label: {
+          show: showValues,
+          position: "top",
+          color: renderingContext.getColor("text-primary"),
+          fontFamily: renderingContext.fontFamily,
+        },
         z: 1,
       },
       {

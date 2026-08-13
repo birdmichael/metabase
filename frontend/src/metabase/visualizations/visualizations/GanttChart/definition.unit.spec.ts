@@ -74,5 +74,16 @@ describe("GANTT_CHART_DEFINITION", () => {
       );
     });
   });
+
+  describe("settings", () => {
+    it("exposes category, start, end, and optional progress", () => {
+      const settings = GANTT_CHART_DEFINITION.settings;
+      expect(settings["gantt.category"]).toBeDefined();
+      expect(settings["gantt.start"]).toBeDefined();
+      expect(settings["gantt.end"]).toBeDefined();
+      expect(settings["gantt.progress"]).toBeDefined();
+    });
+  });
+
 });
 

@@ -49,7 +49,10 @@ export const SETTINGS_DEFINITIONS: VisualizationSettingsDefinitions = {
     useRawSeries: true,
     getDefault: ([{ data }]: RawSeries) =>
       metricColumns(data).map((col) => col.name),
-    getProps: ([{ data }]: RawSeries, vizSettings: ComputedVisualizationSettings) => {
+    getProps: (
+      [{ data }]: RawSeries,
+      vizSettings: ComputedVisualizationSettings,
+    ) => {
       const options = metricColumns(data).map(getOptionFromColumn);
       const added = getRadarMetricNames(vizSettings);
       return {
@@ -60,6 +63,40 @@ export const SETTINGS_DEFINITIONS: VisualizationSettingsDefinitions = {
         showColumnSetting: true,
       };
     },
+  },
+
+  "radar.scale_max": {
+    getSection: () => t`Display`,
+    get title() {
+      return t`Scale max`;
+    },
+    widget: "number",
+    getProps: () => ({
+      get placeholder() {
+        return t`Auto`;
+      },
+      options: { isNonNegative: true },
+    }),
+  },
+  "radar.show_legend": {
+    getSection: () => t`Display`,
+    get title() {
+      return t`Show legend`;
+    },
+    widget: "toggle",
+    getDefault: () => true,
+    persistDefault: true,
+    inline: true,
+  },
+  "radar.show_labels": {
+    getSection: () => t`Display`,
+    get title() {
+      return t`Show labels`;
+    },
+    widget: "toggle",
+    getDefault: () => true,
+    persistDefault: true,
+    inline: true,
   },
 };
 
