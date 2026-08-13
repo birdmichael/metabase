@@ -1,6 +1,7 @@
 import type { SankeySeriesOption } from "echarts/charts";
 import type { EChartsCoreOption } from "echarts/core";
 
+import { getEChartsAnimationOptions } from "metabase/visualizations/echarts/animation";
 import { truncateText } from "metabase/visualizations/lib/text";
 import type {
   ComputedVisualizationSettings,
@@ -16,6 +17,7 @@ export const getSankeyChartOption = (
   layout: SankeyChartLayout,
   settings: ComputedVisualizationSettings,
   renderingContext: RenderingContext,
+  isAnimated: boolean = false,
 ): EChartsCoreOption => {
   const { data, formatters } = chartModel;
 
@@ -57,7 +59,6 @@ export const getSankeyChartOption = (
       : formatters.value;
 
   const series: SankeySeriesOption = {
-    animation: false,
     type: "sankey",
     labelLayout: {
       hideOverlap: true,
@@ -111,6 +112,7 @@ export const getSankeyChartOption = (
   };
 
   return {
+    ...getEChartsAnimationOptions(isAnimated),
     series,
   };
 };

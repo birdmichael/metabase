@@ -7,6 +7,7 @@ import type {
 } from "echarts/types/dist/shared";
 import type { OptionSourceData } from "echarts/types/src/util/types";
 
+import { getEChartsAnimationOptions } from "metabase/visualizations/echarts/animation";
 import {
   NEGATIVE_STACK_TOTAL_DATA_KEY,
   OTHER_DATA_KEY,
@@ -58,9 +59,7 @@ export const getSharedEChartsOptions = (
   renderingContext: RenderingContext,
 ) => ({
   useUTC: true,
-  animation: isAnimated,
-  animationDuration: 0,
-  animationDurationUpdate: 1, // by setting this to 1ms we visually eliminate shape transitions while preserving opacity transitions
+  ...getEChartsAnimationOptions(isAnimated),
   toolbox: {
     show: false,
   },

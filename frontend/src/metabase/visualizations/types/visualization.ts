@@ -432,6 +432,8 @@ export type VisualizationSettingsDefinitions = {
   "boxplot.show_mean"?: SeriesSettingDefinition<Value, Props>;
   "boxplot.show_values_mode"?: SeriesSettingDefinition<Value, Props>;
   "boxplot.whisker_type"?: SeriesSettingDefinition<Value, Props>;
+  "calendar.date"?: SeriesSettingDefinition<Value, Props>;
+  "calendar.value"?: SeriesSettingDefinition<Value, Props>;
   "card.description"?: SeriesSettingDefinition<Value, Props>;
   "card.hide_empty"?: SeriesSettingDefinition<Value, Props>;
   "card.title"?: SeriesSettingDefinition<Value, Props>;
@@ -453,6 +455,9 @@ export type VisualizationSettingsDefinitions = {
     Value,
     ChartSettingSegmentsEditorProps
   >;
+  "heatmap.value"?: SeriesSettingDefinition<Value, Props>;
+  "heatmap.x"?: SeriesSettingDefinition<Value, Props>;
+  "heatmap.y"?: SeriesSettingDefinition<Value, Props>;
   "graph.colors"?: SeriesSettingDefinition<Value, Props>;
   "graph.dimensions"?: SeriesSettingDefinition<Value, Props>;
   "graph.goal_label"?: SeriesSettingDefinition<Value, Props>;
@@ -551,6 +556,10 @@ export type VisualizationSettingsDefinitions = {
   "progress.color"?: SeriesSettingDefinition<Value, Props>;
   "progress.goal"?: SeriesSettingDefinition<Value, ChartSettingGoalInputProps>;
   "progress.value"?: SeriesSettingDefinition<Value, Props>;
+  "radar.dimension"?: SeriesSettingDefinition<Value, Props>;
+  "radar.metrics"?: SeriesSettingDefinition<Value, Props>;
+  "rose.dimension"?: SeriesSettingDefinition<Value, Props>;
+  "rose.metric"?: SeriesSettingDefinition<Value, Props>;
   "sankey.edge_color"?: SeriesSettingDefinition<Value, Props>;
   "sankey.label_value_formatting"?: SeriesSettingDefinition<Value, Props>;
   "sankey.node_align"?: SeriesSettingDefinition<Value, Props>;
@@ -572,6 +581,8 @@ export type VisualizationSettingsDefinitions = {
   show_series_values?: SingleSeriesSettingDefinition<Value, Props>;
   "stackable.stack_type"?: SeriesSettingDefinition<Value, Props>;
   suffix?: DatasetColumnSettingDefinition<Value, Props>;
+  "sunburst.dimensions"?: SeriesSettingDefinition<Value, Props>;
+  "sunburst.metric"?: SeriesSettingDefinition<Value, Props>;
   "table.columns"?: SeriesSettingDefinition<
     Value,
     ChartSettingTableColumnsProps

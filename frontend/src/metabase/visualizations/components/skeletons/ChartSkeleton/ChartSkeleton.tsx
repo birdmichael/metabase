@@ -60,6 +60,15 @@ export const getChartSkeletonImage: (
       return <RowSkeleton />;
     case "sankey":
       return <SankeySkeleton />;
+    case "radar":
+      return <PieSkeleton />;
+    case "heatmap":
+      return <ScatterSkeleton />;
+    case "sunburst":
+    case "rose":
+      return <PieSkeleton />;
+    case "calendar":
+      return <ScatterSkeleton />;
     case "scatter":
       return <ScatterSkeleton />;
     case "waterfall":

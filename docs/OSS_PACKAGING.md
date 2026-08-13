@@ -65,3 +65,21 @@ Official Docker docs: [Running Metabase on Docker](https://www.metabase.com/docs
 - Frontend deps use `bun install --frozen-lockfile`; a dirty lockfile fails the image build.
 - Uberjar / image builds need a lot of RAM; OOM is a common failure.
 - Production application DB must be Postgres (or another supported DB), not H2.
+
+## Original OSS visualizations
+
+This fork adds original AGPL / Community Edition charts. They are **not** Enterprise ports and do not live under `enterprise/` or `metabase-enterprise`.
+
+- **Radar** (`display: radar`): one dimension for axis indicators and one or more metrics as series, rendered with ECharts `radar`.
+- **Heatmap** (`display: heatmap`): two dimensions (`heatmap.x`, `heatmap.y`) plus a metric (`heatmap.value`), rendered with ECharts `heatmap` and `visualMap`.
+- **Sunburst** (`display: sunburst`): hierarchical dimensions plus a metric, rendered with the already-registered ECharts `sunburst` chart.
+- **Rose** (`display: rose`): one dimension plus a metric, a nightingale / rose pie (`roseType: "area"`).
+- **Calendar heatmap** (`display: calendar`): a date dimension plus a metric, ECharts `calendar` + `heatmap`. Distinct from the matrix heatmap.
+
+Shared ECharts animation defaults (cartesian, pie, sankey, treemap, radar, heatmap, sunburst, rose, calendar):
+
+- Animated (interactive UI, unless the user prefers reduced motion): `animationDuration` 500ms, `animationDurationUpdate` 300ms, easing `cubicOut`.
+- Not animated (static exports / reduced motion): `animation` false and duration 0.
+
+Do not set `MB_EDITION=ee` for these charts.
+
