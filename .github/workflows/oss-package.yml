@@ -23,7 +23,7 @@ jobs:
   build-oss:
     name: Build OSS uberjar and image
     runs-on: ubuntu-latest
-    timeout-minutes: 90
+    timeout-minutes: 120
     env:
       MB_EDITION: oss
       INTERACTIVE: false
@@ -56,18 +56,23 @@ jobs:
         run: |
           cp target/uberjar/metabase.jar bin/docker/metabase.jar
 
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Build runtime image
+      - name: Build amd64 image for smoke test
         uses: docker/build-push-action@v6
         with:
           context: bin/docker
           file: bin/docker/Dockerfile
+          platforms: linux/amd64
           load: true
           tags: ${{ env.IMAGE }}
           build-args: |
             GIT_COMMIT_SHA=${{ github.sha }}
+          cache-from: type=gha
 
       - name: Smoke test /api/health
         run: |
@@ -95,5 +100,15 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Push image
-        run: docker push "$IMAGE"
+      - name: Build and push multi-arch image
+        uses: docker/build-push-action@v6
+        with:
+          context: bin/docker
+          file: bin/docker/Dockerfile
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: ${{ env.IMAGE }}
+          build-args: |
+            GIT_COMMIT_SHA=${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
