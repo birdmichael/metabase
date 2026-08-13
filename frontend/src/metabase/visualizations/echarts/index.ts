@@ -2,7 +2,10 @@ import {
   BarChart,
   BoxplotChart,
   CustomChart,
+  HeatmapChart,
   LineChart,
+  PieChart,
+  RadarChart,
   SankeyChart,
   ScatterChart,
   SunburstChart,
@@ -10,13 +13,16 @@ import {
 } from "echarts/charts";
 import {
   BrushComponent,
+  CalendarComponent,
   DataZoomComponent,
   DatasetComponent,
   GraphicComponent,
   GridComponent,
   MarkLineComponent,
+  RadarComponent,
   ToolboxComponent,
   TooltipComponent,
+  VisualMapComponent,
 } from "echarts/components";
 import { use } from "echarts/core";
 import { LabelLayout } from "echarts/features";
@@ -31,8 +37,14 @@ export const registerEChartsModules = () => {
     ScatterChart,
     CustomChart,
     SunburstChart,
+    PieChart,
+    RadarChart,
+    HeatmapChart,
     GraphicComponent,
     GridComponent,
+    RadarComponent,
+    VisualMapComponent,
+    CalendarComponent,
     BarChart,
     SVGRenderer,
     MarkLineComponent,

@@ -1,6 +1,7 @@
 import type { EChartsType } from "echarts/core";
 import { useCallback, useMemo, useRef } from "react";
 
+import { isReducedMotionPreferred } from "metabase/utils/dom";
 import { extractRemappings } from "metabase/visualizations";
 import { ResponsiveEChartsRenderer } from "metabase/visualizations/components/EChartsRenderer";
 import { getSankeyLayout } from "metabase/visualizations/echarts/graph/sankey/layout";
@@ -47,7 +48,13 @@ export const SankeyChart = ({
   );
   const option = useMemo(
     () => ({
-      ...getSankeyChartOption(chartModel, layout, settings, renderingContext),
+      ...getSankeyChartOption(
+        chartModel,
+        layout,
+        settings,
+        renderingContext,
+        !isReducedMotionPreferred(),
+      ),
       tooltip: getTooltipOption(containerRef, chartModel),
     }),
     [chartModel, layout, settings, renderingContext],

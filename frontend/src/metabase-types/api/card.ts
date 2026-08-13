@@ -395,6 +395,27 @@ export type VisualizationSettings = {
   "sankey.show_edge_labels"?: boolean;
   "sankey.label_value_formatting"?: "auto" | "full" | "compact";
 
+  // Radar settings
+  "radar.dimension"?: string;
+  "radar.metrics"?: string[];
+
+  // Heatmap settings
+  "heatmap.x"?: string;
+  "heatmap.y"?: string;
+  "heatmap.value"?: string;
+
+  // Sunburst settings
+  "sunburst.dimensions"?: string[];
+  "sunburst.metric"?: string;
+
+  // Rose settings
+  "rose.dimension"?: string;
+  "rose.metric"?: string;
+
+  // Calendar heatmap settings
+  "calendar.date"?: string;
+  "calendar.value"?: string;
+
   // Treemap settings
   "treemap.grouping"?: string;
   "treemap.sub_grouping"?: string | null;

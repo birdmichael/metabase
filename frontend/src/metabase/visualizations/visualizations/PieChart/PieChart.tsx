@@ -2,6 +2,7 @@ import type { EChartsType } from "echarts/core";
 import { type MouseEvent, useCallback, useMemo, useRef, useState } from "react";
 import { useSet } from "react-use";
 
+import { isReducedMotionPreferred } from "metabase/utils/dom";
 import { isNotNull } from "metabase/utils/types";
 import { extractRemappings } from "metabase/visualizations";
 import { ChartWithLegend } from "metabase/visualizations/components/ChartWithLegend";
@@ -86,6 +87,7 @@ export function PieChart(props: VisualizationProps) {
         sideLength,
         hoveredIndex,
         hoveredSliceKeyPath,
+        !isReducedMotionPreferred(),
       ),
       tooltip: getTooltipOption(chartModel, formatters, containerRef),
     }),

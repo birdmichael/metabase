@@ -3,6 +3,7 @@ import type { EChartsOption, SunburstSeriesOption } from "echarts";
 
 import { getTextColorForBackground } from "metabase/ui/colors";
 import { checkNotNull } from "metabase/utils/types";
+import { getEChartsAnimationOptions } from "metabase/visualizations/echarts/animation";
 import { CHAR_ELLIPSES, truncateText } from "metabase/visualizations/lib/text";
 import type {
   ComputedVisualizationSettings,
@@ -318,6 +319,7 @@ export function getPieChartOption(
   sideLength: number,
   hoveredIndex?: number,
   hoveredSliceKeyPath?: string[],
+  isAnimated: boolean = false,
 ): EChartsOption {
   // Sizing
   const innerSideLength = Math.min(
@@ -365,10 +367,7 @@ export function getPieChartOption(
   );
 
   return {
-    // Unlike the cartesian chart, `animationDuration: 0` does not prevent the
-    // chart from animating on initial render, so we unfortunately have to
-    // disable all animations.
-    animation: false,
+    ...getEChartsAnimationOptions(isAnimated),
     textStyle: {
       fontFamily: renderingContext.fontFamily,
     },
