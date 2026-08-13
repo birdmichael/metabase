@@ -1,0 +1,99 @@
+name: OSS package
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [oss-0.63.2]
+    paths:
+      - ".github/workflows/oss-package.yml"
+      - "bin/build-oss-docker.sh"
+      - "bin/build.sh"
+      - "Dockerfile"
+      - "bin/docker/**"
+
+concurrency:
+  group: oss-package-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  build-oss:
+    name: Build OSS uberjar and image
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      MB_EDITION: oss
+      INTERACTIVE: false
+      IMAGE: ghcr.io/birdmichael/metabase:oss-0.63.2
+    steps:
+      - name: Check out oss-0.63.2
+        uses: actions/checkout@v4
+
+      - name: Prepare front-end environment
+        uses: ./.github/actions/prepare-frontend
+        with:
+          node-version: "22"
+
+      - name: Prepare back-end environment
+        uses: ./.github/actions/prepare-backend
+        with:
+          java-version: "25"
+
+      - name: Build OSS uberjar
+        run: ./bin/build.sh
+
+      - name: Upload uberjar
+        uses: actions/upload-artifact@v4
+        with:
+          name: metabase-oss-0.63.2
+          path: target/uberjar/metabase.jar
+          if-no-files-found: error
+
+      - name: Prepare Docker context
+        run: |
+          cp target/uberjar/metabase.jar bin/docker/metabase.jar
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build runtime image
+        uses: docker/build-push-action@v6
+        with:
+          context: bin/docker
+          file: bin/docker/Dockerfile
+          load: true
+          tags: ${{ env.IMAGE }}
+          build-args: |
+            GIT_COMMIT_SHA=${{ github.sha }}
+
+      - name: Smoke test /api/health
+        run: |
+          docker run -d --name metabase-oss -p 3000:3000 "$IMAGE"
+          ok=0
+          for i in $(seq 1 90); do
+            if curl -fsS http://localhost:3000/api/health 2>/dev/null | grep -q '"status":"ok"'; then
+              echo "healthy after ${i} checks"
+              ok=1
+              break
+            fi
+            sleep 5
+          done
+          docker logs metabase-oss | tail -n 80
+          if [ "$ok" != 1 ]; then
+            echo "Metabase did not become healthy"
+            exit 1
+          fi
+          docker stop metabase-oss
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Push image
+        run: docker push "$IMAGE"
