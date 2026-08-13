@@ -55,7 +55,6 @@ export const SETTINGS_DEFINITIONS: VisualizationSettingsDefinitions = {
     },
     widget: "input",
     persistDefault: true,
-    dashboard: true,
     getDefault: () => "",
     getProps: () => ({
       get placeholder() {
@@ -104,4 +103,3 @@ export const WORD_CLOUD_DEFINITION: VisualizationDefinition = {
     ...SETTINGS_DEFINITIONS,
   },
 };
-

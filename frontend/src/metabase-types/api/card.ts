@@ -442,6 +442,7 @@ export type VisualizationSettings = {
   "wordcloud.dimension"?: string;
   "wordcloud.metric"?: string;
   "wordcloud.stopwords"?: string;
+  "bullet.dimension"?: string;
   "bullet.actual"?: string;
   "bullet.target"?: string;
   "bullet.target_value"?: number;

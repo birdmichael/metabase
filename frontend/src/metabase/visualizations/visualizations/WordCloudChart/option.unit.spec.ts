@@ -6,7 +6,7 @@ import {
   createMockDatasetData,
 } from "metabase-types/api/mocks/dataset";
 
-import { getWordCloudChartOption } from "./option";
+import { getWordCloudChartOption, layoutWordCloud } from "./option";
 
 const renderingContext: RenderingContext = {
   getColor: (name) => name,
@@ -42,6 +42,22 @@ const rawSeries = [
   },
 ];
 
+describe("layoutWordCloud", () => {
+  it("spreads words across distinct positions", () => {
+    const layout = layoutWordCloud([
+      { name: "alpha", value: 40 },
+      { name: "beta", value: 20 },
+      { name: "gamma", value: 10 },
+      { name: "delta", value: 8 },
+    ]);
+    const xs = new Set(layout.map((word) => Math.round(word.x)));
+    const ys = new Set(layout.map((word) => Math.round(word.y)));
+    expect(layout).toHaveLength(4);
+    expect(xs.size).toBeGreaterThan(1);
+    expect(ys.size).toBeGreaterThan(1);
+  });
+});
+
 describe("getWordCloudChartOption", () => {
   it("builds the expected series", () => {
     const option = getWordCloudChartOption(
@@ -50,11 +66,29 @@ describe("getWordCloudChartOption", () => {
       renderingContext,
       true,
     );
-    const graphic = option.graphic as { elements: { type: string; style: { text: string } }[] };
-    expect(graphic.elements.length).toBeGreaterThan(0);
-    expect(graphic.elements.every((el) => el.type === "text")).toBe(true);
-    const texts = graphic.elements.map((el) => el.style.text).sort();
+    const graphic = option.graphic as {
+      elements: {
+        type: string;
+        children: {
+          type: string;
+          x: number;
+          y: number;
+          style: { text: string };
+        }[];
+      }[];
+    };
+    expect(graphic.elements[0].type).toBe("group");
+    expect(graphic.elements[0].children.every((el) => el.type === "text")).toBe(
+      true,
+    );
+    const texts = graphic.elements[0].children
+      .map((el) => el.style.text)
+      .sort();
     expect(texts).toEqual(["A", "B"]);
+    const xs = new Set(
+      graphic.elements[0].children.map((el) => Math.round(el.x)),
+    );
+    expect(xs.size).toBeGreaterThan(1);
     expect(option.animation).toBe(true);
     expect(option.animationDuration).toBe(500);
   });
@@ -80,9 +114,11 @@ describe("getWordCloudChartOption", () => {
       renderingContext,
       true,
     );
-    const graphic = option.graphic as { elements: { style: { text: string } }[] };
-    expect(graphic.elements.map((el) => el.style.text)).toEqual(["B"]);
+    const graphic = option.graphic as {
+      elements: { children: { style: { text: string } }[] }[];
+    };
+    expect(graphic.elements[0].children.map((el) => el.style.text)).toEqual([
+      "B",
+    ]);
   });
-
 });
-

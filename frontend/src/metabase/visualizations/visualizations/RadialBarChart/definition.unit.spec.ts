@@ -78,5 +78,13 @@ describe("RADIAL_BAR_DEFINITION", () => {
       );
     });
   });
-});
 
+  describe("settings", () => {
+    it("exposes radialbar.max in Display", () => {
+      const settings = RADIAL_BAR_DEFINITION.settings;
+      expect(settings["radialbar.max"]?.widget).toBe("number");
+      expect(settings["radialbar.max"]?.getSection?.()).toBe("Display");
+      expect(settings["radialbar.max"]?.dashboard).toBeUndefined();
+    });
+  });
+});

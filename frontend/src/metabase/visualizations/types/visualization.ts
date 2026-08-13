@@ -454,6 +454,7 @@ export type VisualizationSettingsDefinitions = {
   "bubble.x"?: SeriesSettingDefinition<Value, Props>;
   "bubble.y"?: SeriesSettingDefinition<Value, Props>;
   "bubble.show_legend"?: SeriesSettingDefinition<Value, Props>;
+  "bullet.dimension"?: SeriesSettingDefinition<Value, Props>;
   "bullet.actual"?: SeriesSettingDefinition<Value, Props>;
   "bullet.target"?: SeriesSettingDefinition<Value, Props>;
   "bullet.target_value"?: SeriesSettingDefinition<Value, Props>;

@@ -61,15 +61,22 @@ export function getWaffleChartOption(
     );
   }
 
-
   const colors = getColorsForValues(order, settings["series_settings.colors"]);
-  const total = order.reduce((sum, name) => sum + Math.abs(totals.get(name) ?? 0), 0);
+  const total = order.reduce(
+    (sum, name) => sum + Math.abs(totals.get(name) ?? 0),
+    0,
+  );
   const gridSize = 10;
   const cellCount = gridSize * gridSize;
   const shares = order.map((name) => {
     const value = Math.abs(totals.get(name) ?? 0);
     const exact = total === 0 ? 0 : (value / total) * cellCount;
-    return { name, value, floor: Math.floor(exact), remainder: exact - Math.floor(exact) };
+    return {
+      name,
+      value,
+      floor: Math.floor(exact),
+      remainder: exact - Math.floor(exact),
+    };
   });
   let remaining = cellCount - shares.reduce((sum, item) => sum + item.floor, 0);
   const sorted = [...shares].sort((a, b) => b.remainder - a.remainder);
@@ -97,6 +104,7 @@ export function getWaffleChartOption(
     name: cell.name,
     itemStyle: { color: colors[cell.name] },
   }));
+  const showLegend = settings["waffle.show_legend"] !== false;
 
   return {
     ...getEChartsAnimationOptions(isAnimated),
@@ -108,7 +116,7 @@ export function getWaffleChartOption(
       trigger: "item",
     },
     legend: {
-      show: settings["waffle.show_legend"] !== false,
+      show: showLegend,
       data: order,
       textStyle: {
         color: renderingContext.getColor("text-secondary"),
@@ -118,7 +126,7 @@ export function getWaffleChartOption(
     grid: {
       left: 12,
       right: 12,
-      top: 12,
+      top: showLegend ? 36 : 12,
       bottom: 12,
     },
     xAxis: {
@@ -133,14 +141,13 @@ export function getWaffleChartOption(
       max: gridSize - 0.5,
       show: false,
     },
-    series: [
-      {
-        type: "scatter",
-        symbol: "rect",
-        symbolSize: 18,
-        data: scatterData,
-      },
-    ],
+    series: order.map((name) => ({
+      type: "scatter",
+      name,
+      symbol: "rect",
+      symbolSize: 18,
+      data: scatterData.filter((cell) => cell.name === name),
+      itemStyle: { color: colors[name] },
+    })),
   } as EChartsCoreOption;
 }
-
