@@ -15,7 +15,6 @@ import {
   TreemapChart,
 } from "echarts/charts";
 import {
-  AngleAxisComponent,
   BrushComponent,
   CalendarComponent,
   DataZoomComponent,
@@ -26,7 +25,6 @@ import {
   MarkLineComponent,
   PolarComponent,
   RadarComponent,
-  RadiusAxisComponent,
   ToolboxComponent,
   TooltipComponent,
   VisualMapComponent,
@@ -53,8 +51,6 @@ export const registerEChartsModules = () => {
     GraphicComponent,
     GridComponent,
     PolarComponent,
-    AngleAxisComponent,
-    RadiusAxisComponent,
     LegendComponent,
     RadarComponent,
     VisualMapComponent,
