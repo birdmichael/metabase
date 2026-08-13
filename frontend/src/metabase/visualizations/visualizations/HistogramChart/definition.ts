@@ -40,7 +40,6 @@ export const SETTINGS_DEFINITIONS: VisualizationSettingsDefinitions = {
     },
     widget: "number",
     persistDefault: true,
-    dashboard: true,
     getDefault: () => 10,
     getProps: () => ({
       options: { isInteger: true, isNonNegative: true },
@@ -83,4 +82,3 @@ export const HISTOGRAM_CHART_DEFINITION: VisualizationDefinition = {
     ...SETTINGS_DEFINITIONS,
   },
 };
-

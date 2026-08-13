@@ -14,10 +14,10 @@
 
 原先笛卡尔图把 `animationDuration` 设成 `0`，看起来像没动画。现在统一：
 
-| 场景 | 行为 |
-| --- | --- |
+| 场景                                 | 行为                                    |
+| ------------------------------------ | --------------------------------------- |
 | 交互界面（未开系统「减少动态效果」） | 时长 500ms，更新 300ms，缓动 `cubicOut` |
-| 静态导出 / `prefers-reduced-motion` | `animation: false`，时长 0 |
+| 静态导出 / `prefers-reduced-motion`  | `animation: false`，时长 0              |
 
 已接到：柱/线/面积/组合/条形/瀑布/散点、饼图、桑基、矩形树，以及下面所有新图。
 
@@ -103,8 +103,8 @@ Metabase 产品本身的浅色/深色仍走应用主题，这一套只作用于�
 
 适合：实际 vs 目标。
 
-- 数据：实际值指标；目标可以是第二指标或设置里的目标值
-- 数据设置：`bullet.actual`、`bullet.target`、`bullet.target_value`
+- 数据：可选分类维度 + 实际值指标；目标可以是第二指标或设置里的目标值。有分类时每一类一根子弹。
+- 数据设置：`bullet.dimension`（分类，可选）、`bullet.actual`、`bullet.target`、`bullet.target_value`
 - 显示设置：`bullet.show_ranges`（差/中/好背景带，默认开）
 
 ### 直方图 `histogram`
@@ -136,8 +136,8 @@ Metabase 产品本身的浅色/深色仍走应用主题，这一套只作用于�
 适合：单个完成率（0–1 或占最大值的百分比）。自写正弦液面，不是 `echarts-liquidfill`。
 
 - 数据：1 个数值
-- 数据设置：`liquid.metric`、`liquid.max`（分母；空则 1 / 100 / 实际值）
-- 显示设置：`liquid.show_percent`（默认开）
+- 数据设置：`liquid.metric`
+- 显示设置：`liquid.max`（分母；空则 1 / 100 / 实际值）、`liquid.show_percent`（默认开）
 
 ### 华夫图 `waffle`
 
@@ -198,28 +198,28 @@ Metabase 产品本身的浅色/深色仍走应用主题，这一套只作用于�
 
 图标复用现有 Icon，没有加新 SVG：
 
-| display | 图标 |
-| --- | --- |
-| radar | star |
-| heatmap | grid |
-| sunburst | sun |
-| rose | pie_slice |
-| calendar | calendar |
-| donut | pie |
-| bubble | bubble |
-| wordcloud | quote |
-| bullet | compare |
-| histogram | bar |
-| radialbar | curved |
-| lollipop | pin |
-| liquid | beaker |
-| waffle | grid_2x2 |
-| pareto | lineandbar |
-| circlepack | group |
-| graph | network |
-| gantt | clock |
-| candlestick | straight |
-| pyramid | arrow_split |
+| display     | 图标        |
+| ----------- | ----------- |
+| radar       | star        |
+| heatmap     | grid        |
+| sunburst    | sun         |
+| rose        | pie_slice   |
+| calendar    | calendar    |
+| donut       | pie         |
+| bubble      | bubble      |
+| wordcloud   | quote       |
+| bullet      | compare     |
+| histogram   | bar         |
+| radialbar   | curved      |
+| lollipop    | pin         |
+| liquid      | beaker      |
+| waffle      | grid_2x2    |
+| pareto      | lineandbar  |
+| circlepack  | group       |
+| graph       | network     |
+| gantt       | clock       |
+| candlestick | straight    |
+| pyramid     | arrow_split |
 
 卡片默认尺寸走 `DEFAULT_CARD_SIZE`（未改 Clojure 仪表盘常量）。新文案还没跑 i18n 抽取。
 

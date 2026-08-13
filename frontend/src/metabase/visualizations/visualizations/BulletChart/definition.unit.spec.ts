@@ -12,6 +12,11 @@ const isSensible = checkNotNull(BULLET_CHART_DEFINITION.isSensible);
 
 const columns = [
   createMockColumn({
+    name: "name",
+    display_name: "Name",
+    base_type: "type/Text",
+  }),
+  createMockColumn({
     name: "Actual",
     display_name: "Actual",
     base_type: "type/Number",
@@ -22,10 +27,10 @@ const columns = [
     display_name: "Target",
     base_type: "type/Number",
     semantic_type: "type/Number",
-  })
+  }),
 ];
 
-const rows = [[80, 100]];
+const rows = [["North", 80, 100]];
 
 describe("BULLET_CHART_DEFINITION", () => {
   describe("isSensible", () => {
@@ -69,5 +74,15 @@ describe("BULLET_CHART_DEFINITION", () => {
       );
     });
   });
-});
 
+  describe("settings", () => {
+    it("exposes a dimension mapping in Data", () => {
+      const settings = BULLET_CHART_DEFINITION.settings;
+      expect(settings["bullet.dimension"]?.widget).toBe("field");
+      expect(settings["bullet.dimension"]?.getSection?.()).toBe("Data");
+      expect(settings["bullet.actual"]).toBeDefined();
+      expect(settings["bullet.target"]).toBeDefined();
+      expect(settings["bullet.show_ranges"]?.getDefault?.()).toBe(true);
+    });
+  });
+});

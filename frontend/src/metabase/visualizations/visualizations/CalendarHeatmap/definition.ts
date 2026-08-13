@@ -62,7 +62,6 @@ export const SETTINGS_DEFINITIONS: VisualizationSettingsDefinitions = {
       return t`Color scale min`;
     },
     widget: "number",
-    dashboard: true,
     getProps: () => ({
       get placeholder() {
         return t`Auto`;
@@ -75,7 +74,6 @@ export const SETTINGS_DEFINITIONS: VisualizationSettingsDefinitions = {
       return t`Color scale max`;
     },
     widget: "number",
-    dashboard: true,
     getProps: () => ({
       get placeholder() {
         return t`Auto`;

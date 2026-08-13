@@ -60,13 +60,14 @@ export function getBubbleChartOption(
     }
     const size = sizeIdx >= 0 ? (toFiniteNumber(row[sizeIdx]) ?? 0) : 1;
     sizeValues.push(Math.abs(size));
-    const name =
-      catIdx >= 0 && row[catIdx] != null ? String(row[catIdx]) : "";
+    const name = catIdx >= 0 && row[catIdx] != null ? String(row[catIdx]) : "";
     points.push({ name, value: [x, y, Math.abs(size)] });
   }
 
   const maxSize = Math.max(1, ...sizeValues);
-  const categories = [...new Set(points.map((point) => point.name).filter(Boolean))];
+  const categories = [
+    ...new Set(points.map((point) => point.name).filter(Boolean)),
+  ];
   const colors = getColorsForValues(
     categories.length > 0 ? categories : ["bubble"],
     settings["series_settings.colors"],
@@ -74,6 +75,8 @@ export function getBubbleChartOption(
   const brand = renderingContext.getColor("core-brand");
   const showLegend =
     settings["bubble.show_legend"] !== false && categories.length > 0;
+  const seriesNames =
+    categories.length > 0 ? categories : [yCol.display_name || yCol.name];
 
   return {
     ...getEChartsAnimationOptions(isAnimated),
@@ -86,7 +89,7 @@ export function getBubbleChartOption(
     },
     legend: {
       show: showLegend,
-      data: categories,
+      data: seriesNames,
       textStyle: {
         color: renderingContext.getColor("text-secondary"),
         fontFamily: renderingContext.fontFamily,
@@ -96,7 +99,7 @@ export function getBubbleChartOption(
       containLabel: true,
       left: 16,
       right: 16,
-      top: 16,
+      top: showLegend ? 36 : 16,
       bottom: 32,
     },
     xAxis: {
@@ -119,24 +122,25 @@ export function getBubbleChartOption(
         fontFamily: renderingContext.fontFamily,
       },
     },
-    series: [
-      {
-        type: "scatter",
-        name: yCol.display_name || yCol.name,
-        data: points.map((point) => ({
-          name: point.name,
+    series: seriesNames.map((seriesName) => ({
+      type: "scatter",
+      name: seriesName,
+      data: points
+        .filter((point) =>
+          categories.length > 0 ? point.name === seriesName : true,
+        )
+        .map((point) => ({
+          name: point.name || seriesName,
           value: point.value,
           itemStyle: {
             color: point.name ? colors[point.name] : brand,
             opacity: 0.75,
           },
         })),
-        symbolSize: (value: number[]) => {
-          const size = Array.isArray(value) ? value[2] ?? 1 : 1;
-          return 8 + (Math.sqrt(size / maxSize) * 36);
-        },
+      symbolSize: (value: number[]) => {
+        const size = Array.isArray(value) ? (value[2] ?? 1) : 1;
+        return 8 + Math.sqrt(size / maxSize) * 36;
       },
-    ],
+    })),
   } as EChartsCoreOption;
 }
-

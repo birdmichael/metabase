@@ -49,7 +49,10 @@ export const SETTINGS_DEFINITIONS: VisualizationSettingsDefinitions = {
     useRawSeries: true,
     getDefault: ([{ data }]: RawSeries) =>
       metricColumns(data).map((col) => col.name),
-    getProps: ([{ data }]: RawSeries, vizSettings: ComputedVisualizationSettings) => {
+    getProps: (
+      [{ data }]: RawSeries,
+      vizSettings: ComputedVisualizationSettings,
+    ) => {
       const options = metricColumns(data).map(getOptionFromColumn);
       const added = getRadarMetricNames(vizSettings);
       return {
@@ -68,7 +71,6 @@ export const SETTINGS_DEFINITIONS: VisualizationSettingsDefinitions = {
       return t`Scale max`;
     },
     widget: "number",
-    dashboard: true,
     getProps: () => ({
       get placeholder() {
         return t`Auto`;

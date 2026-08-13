@@ -54,7 +54,6 @@ export const SETTINGS_DEFINITIONS: VisualizationSettingsDefinitions = {
       return t`Scale max`;
     },
     widget: "number",
-    dashboard: true,
     getProps: () => ({
       get placeholder() {
         return t`Auto`;
@@ -113,4 +112,3 @@ export const RADIAL_BAR_DEFINITION: VisualizationDefinition = {
     ...SETTINGS_DEFINITIONS,
   },
 };
-

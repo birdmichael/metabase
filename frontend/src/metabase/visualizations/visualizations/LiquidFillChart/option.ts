@@ -21,7 +21,11 @@ const toFiniteNumber = (value: RowValue): number | null => {
 const findColumn = (cols: DatasetColumn[], name: string | undefined) =>
   name == null ? undefined : cols.find((col) => col.name === name);
 
-const wavePoints = (phase: number, fill: number, radius: number): number[][] => {
+const wavePoints = (
+  phase: number,
+  fill: number,
+  radius: number,
+): number[][] => {
   const points: number[][] = [];
   const waterY = radius * (1 - 2 * fill);
   for (let i = 0; i <= 40; i++) {
@@ -69,84 +73,84 @@ export function getLiquidFillOption(
   }
   const ratio = Math.max(0, Math.min(1, value / max));
   const brand = renderingContext.getColor("core-brand");
-  const radius = 90;
-  const percent = `${Math.round(ratio * 100)}%`;
+  const background = renderingContext.getColor("background_page-primary");
+  const textColor = renderingContext.getColor("text-primary");
   const showPercent = settings["liquid.show_percent"] !== false;
-
-  const wave = {
-    type: "polygon",
-    shape: { points: wavePoints(0, ratio, radius) },
-    style: { fill: brand, opacity: 0.65 },
-    clipPath: { type: "circle", shape: { r: radius } },
-    ...(isAnimated
-      ? {
-          keyframeAnimation: {
-            duration: 2400,
-            loop: true,
-            keyframes: [
-              { percent: 0, shape: { points: wavePoints(0, ratio, radius) } },
-              {
-                percent: 100,
-                shape: { points: wavePoints(Math.PI * 2, ratio, radius) },
-              },
-            ],
-          },
-        }
-      : {}),
-  };
 
   return {
     ...getEChartsAnimationOptions(isAnimated),
     textStyle: {
       fontFamily: renderingContext.fontFamily,
-      color: renderingContext.getColor("text-primary"),
+      color: textColor,
     },
     tooltip: { show: false },
-    graphic: {
-      elements: [
-        {
-          type: "group",
-          left: "center",
-          top: "center",
-          children: [
-            {
-              type: "circle",
-              shape: { r: radius },
-              style: {
-                stroke: brand,
-                lineWidth: 3,
-                fill: renderingContext.getColor("background_page-primary"),
-              },
-            },
-            wave,
-            ...(showPercent
-              ? [
-                  {
-                    type: "text",
-                    style: {
-                      text: percent,
-                      fill: renderingContext.getColor("text-primary"),
-                      fontSize: 28,
-                      fontWeight: 600,
-                      fontFamily: renderingContext.fontFamily,
-                      textAlign: "center",
-                      textVerticalAlign: "middle",
-                    },
-                    z: 10,
-                  },
-                ]
-              : []),
-          ],
-        },
-      ],
-    },
+    grid: { left: 0, right: 0, top: 0, bottom: 0 },
+    xAxis: { type: "value", min: -1, max: 1, show: false },
+    yAxis: { type: "value", min: -1, max: 1, show: false },
     series: [
       {
         type: "custom",
-        data: [ratio],
-        renderItem: () => ({ type: "group", children: [] }),
+        coordinateSystem: "cartesian2d",
+        data: [[0, 0, ratio]],
+        renderItem: (
+          _params: unknown,
+          api: {
+            getWidth: () => number;
+            getHeight: () => number;
+            value: (i: number) => number;
+          },
+        ) => {
+          const fill = Math.max(0, Math.min(1, api.value(2)));
+          const cx = api.getWidth() / 2;
+          const cy = api.getHeight() / 2;
+          const radius = Math.max(
+            24,
+            Math.min(api.getWidth(), api.getHeight()) * 0.42,
+          );
+          const points = wavePoints(0, fill, radius).map(([x, y]) => [
+            x + cx,
+            y + cy,
+          ]);
+          const children: Record<string, unknown>[] = [
+            {
+              type: "circle",
+              shape: { cx, cy, r: radius },
+              style: {
+                stroke: brand,
+                lineWidth: 3,
+                fill: background,
+              },
+            },
+            {
+              type: "polygon",
+              shape: { points },
+              style: { fill: brand, opacity: 0.65 },
+              clipPath: {
+                type: "circle",
+                shape: { cx, cy, r: radius },
+              },
+            },
+          ];
+          if (showPercent) {
+            children.push({
+              type: "text",
+              style: {
+                text: `${Math.round(fill * 100)}%`,
+                x: cx,
+                y: cy,
+                fill: textColor,
+                fontSize: Math.max(16, Math.round(radius * 0.32)),
+                fontWeight: 600,
+                fontFamily: renderingContext.fontFamily,
+                textAlign: "center",
+                textVerticalAlign: "middle",
+              },
+              z2: 10,
+            });
+          }
+          return { type: "group", children };
+        },
       },
     ],
   } as EChartsCoreOption;
 }
-

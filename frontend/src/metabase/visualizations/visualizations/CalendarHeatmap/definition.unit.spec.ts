@@ -89,4 +89,16 @@ describe("CALENDAR_HEATMAP_DEFINITION", () => {
       );
     });
   });
+
+  describe("settings", () => {
+    it("exposes color scale controls in Display", () => {
+      const settings = CALENDAR_HEATMAP_DEFINITION.settings;
+      expect(settings["calendar.color_min"]?.widget).toBe("number");
+      expect(settings["calendar.color_min"]?.getSection?.()).toBe("Display");
+      expect(settings["calendar.color_min"]?.dashboard).toBeUndefined();
+      expect(settings["calendar.color_max"]?.widget).toBe("number");
+      expect(settings["calendar.color_max"]?.getSection?.()).toBe("Display");
+      expect(settings["calendar.color_max"]?.dashboard).toBeUndefined();
+    });
+  });
 });

@@ -39,9 +39,9 @@ const rows = [
 describe("RADAR_CHART_DEFINITION", () => {
   describe("isSensible", () => {
     it("should return true for a dimension, metric, and at least 3 rows", () => {
-      expect(
-        isSensible(createMockDatasetData({ rows, cols: columns })),
-      ).toBe(true);
+      expect(isSensible(createMockDatasetData({ rows, cols: columns }))).toBe(
+        true,
+      );
     });
 
     it("should return false when there are fewer than 3 rows", () => {
@@ -128,10 +128,11 @@ describe("RADAR_CHART_DEFINITION", () => {
       const settings = RADAR_CHART_DEFINITION.settings;
       expect(settings["radar.dimension"]).toBeDefined();
       expect(settings["radar.metrics"]).toBeDefined();
-      expect(settings["radar.scale_max"]).toBeDefined();
+      expect(settings["radar.scale_max"]?.widget).toBe("number");
+      expect(settings["radar.scale_max"]?.getSection?.()).toBe("Display");
+      expect(settings["radar.scale_max"]?.dashboard).toBeUndefined();
       expect(settings["radar.show_legend"]?.getDefault?.()).toBe(true);
       expect(settings["radar.show_labels"]?.getDefault?.()).toBe(true);
     });
   });
-
 });

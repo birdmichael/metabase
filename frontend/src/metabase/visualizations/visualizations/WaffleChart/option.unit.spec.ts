@@ -43,21 +43,27 @@ const rawSeries = [
 ];
 
 describe("getWaffleChartOption", () => {
-  it("builds the expected series", () => {
+  it("builds one scatter series per category so the legend can show", () => {
     const option = getWaffleChartOption(
       rawSeries,
       { "waffle.dimension": "Category", "waffle.metric": "Sales" },
       renderingContext,
       true,
     );
-    expect(option.series).toEqual([
-      expect.objectContaining({
-        type: "scatter",
-        symbol: "rect",
-      }),
-    ]);
-    const series = option.series as { data: unknown[] }[];
-    expect(series[0].data).toHaveLength(100);
+    const series = option.series as {
+      type: string;
+      name: string;
+      symbol: string;
+      data: unknown[];
+    }[];
+    expect(series.map((item) => item.name).sort()).toEqual(["A", "B"]);
+    expect(
+      series.every((item) => item.type === "scatter" && item.symbol === "rect"),
+    ).toBe(true);
+    expect(series.reduce((sum, item) => sum + item.data.length, 0)).toBe(100);
+    expect(option.legend).toEqual(
+      expect.objectContaining({ show: true, data: ["A", "B"] }),
+    );
     expect(option.animation).toBe(true);
     expect(option.animationDuration).toBe(500);
   });
@@ -85,6 +91,4 @@ describe("getWaffleChartOption", () => {
     );
     expect(option.legend).toEqual(expect.objectContaining({ show: false }));
   });
-
 });
-
