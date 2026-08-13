@@ -1,0 +1,50 @@
+services:
+  metabase:
+    image: birdmichael/metabase:oss-0.63.2
+    container_name: metabase-oss
+    hostname: metabase
+    ports:
+      - "3000:3000"
+    environment:
+      MB_DB_TYPE: postgres
+      MB_DB_DBNAME: metabaseappdb
+      MB_DB_PORT: 5432
+      MB_DB_USER: metabase
+      MB_DB_PASS: metabase
+      MB_DB_HOST: postgres
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: curl --fail -I http://localhost:3000/api/health || exit 1
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 60s
+    networks:
+      - metanet
+
+  postgres:
+    image: postgres:16
+    container_name: metabase-postgres
+    hostname: postgres
+    environment:
+      POSTGRES_USER: metabase
+      POSTGRES_DB: metabaseappdb
+      POSTGRES_PASSWORD: metabase
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U metabase -d metabaseappdb"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - metanet
+
+networks:
+  metanet:
+    driver: bridge
+
+volumes:
+  pg_data:
