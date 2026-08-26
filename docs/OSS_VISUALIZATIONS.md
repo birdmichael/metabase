@@ -1,6 +1,6 @@
 # OSS 可视化：新增图表、样式与用法
 
-本 fork 在 AGPL Community Edition（`MB_EDITION=oss`，基线 `v0.63.2`）上**从零**加的图表和动效。不是企业版移植，不涉及 `enterprise/`。
+本 fork 在 AGPL Community Edition（`MB_EDITION=oss`，基线 `v0.63.15.1`）上**从零**加的图表和动效。不是企业版移植，不涉及 `enterprise/`。
 
 效果预览（不需要打 Metabase 包）：[oss-viz-gallery](./oss-viz-gallery/README.md)。
 

@@ -1,6 +1,6 @@
-# OSS packaging (v0.63.2)
+# OSS packaging (v0.63.15.1)
 
-Pinned to the official Metabase Community Edition tag **v0.63.2** (`9a6cadd7`). Do not build from `master` for a stable image.
+Pinned to the official Metabase Community Edition tag **v0.63.15.1** (`ab5ffbae`). Do not build from `master` for a stable image.
 
 This is AGPL / Community Edition only (`MB_EDITION=oss`). Do not copy or ship Enterprise sources.
 
@@ -23,12 +23,12 @@ chmod +x bin/build-oss-docker.sh
 ./bin/build-oss-docker.sh
 ```
 
-That runs the repo root `Dockerfile` with `--build-arg MB_EDITION=oss` and tags `birdmichael/metabase:oss-0.63.2`.
+That runs the repo root `Dockerfile` with `--build-arg MB_EDITION=oss` and tags `birdmichael/metabase:oss-0.63.15`.
 
 Equivalent one-liner:
 
 ```bash
-DOCKER_BUILDKIT=1 docker build --build-arg MB_EDITION=oss --build-arg VERSION=v0.63.2 -t birdmichael/metabase:oss-0.63.2 .
+DOCKER_BUILDKIT=1 docker build --build-arg MB_EDITION=oss --build-arg VERSION=v0.63.15.1 -t birdmichael/metabase:oss-0.63.15 .
 ```
 
 Jar only (no runtime image):
@@ -43,7 +43,7 @@ DOCKER_BUILDKIT=1 docker build --build-arg MB_EDITION=oss --output container-out
 GitHub Actions publishes a multi-arch manifest to GHCR with `linux/amd64` and `linux/arm64`:
 
 ```bash
-docker pull ghcr.io/birdmichael/metabase:oss-0.63.2
+docker pull ghcr.io/birdmichael/metabase:oss-0.63.15
 ```
 
 Docker selects the image for the host architecture. The `OSS package` workflow builds both platforms (QEMU for arm64 on GitHub-hosted amd64 runners).

@@ -3,7 +3,7 @@ name: OSS package
 on:
   workflow_dispatch:
   push:
-    branches: [oss-0.63.2]
+    branches: [oss-0.63.15]
     paths:
       - ".github/workflows/oss-package.yml"
       - "bin/build-oss-docker.sh"
@@ -27,9 +27,9 @@ jobs:
     env:
       MB_EDITION: oss
       INTERACTIVE: false
-      IMAGE: ghcr.io/birdmichael/metabase:oss-0.63.2
+      IMAGE: ghcr.io/birdmichael/metabase:oss-0.63.15
     steps:
-      - name: Check out oss-0.63.2
+      - name: Check out oss-0.63.15
         uses: actions/checkout@v4
 
       - name: Prepare front-end environment
@@ -48,7 +48,7 @@ jobs:
       - name: Upload uberjar
         uses: actions/upload-artifact@v4
         with:
-          name: metabase-oss-0.63.2
+          name: metabase-oss-0.63.15
           path: target/uberjar/metabase.jar
           if-no-files-found: error
 

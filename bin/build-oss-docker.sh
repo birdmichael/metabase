@@ -11,8 +11,8 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
 
-IMAGE="${IMAGE:-birdmichael/metabase:oss-0.63.2}"
-VERSION="${VERSION:-v0.63.2}"
+IMAGE="${IMAGE:-birdmichael/metabase:oss-0.63.15}"
+VERSION="${VERSION:-v0.63.15.1}"
 
 DOCKER_BUILDKIT=1 docker build \
   --build-arg MB_EDITION=oss \

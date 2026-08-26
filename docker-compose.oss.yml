@@ -1,6 +1,6 @@
 services:
   metabase:
-    image: birdmichael/metabase:oss-0.63.2
+    image: birdmichael/metabase:oss-0.63.15
     container_name: metabase-oss
     hostname: metabase
     ports:
